@@ -79,6 +79,8 @@
                 ProcessToken(currentToken, TokenParsers.IsFunctionHeaderMain, TokenType.FUNCTION_MAIN);
                 ProcessToken(currentToken, TokenParsers.IsFunctionHeader, TokenType.FUNCTION_HEADER); 
                 ProcessToken(currentToken, TokenParsers.IsFunctionFooter, TokenType.FUNCTION_FOOTER);
+                ProcessToken(currentToken, TokenParsers.IsFunctionParameter, TokenType.FUNCTION_PARAMETER); 
+                ProcessToken(currentToken, TokenParsers.IsFunctionReturn, TokenType.FUNCTION_RETURN);
                 ProcessToken(currentToken, TokenParsers.IsPrintMethod, TokenType.PRINT);
                 ProcessToken(currentToken, TokenParsers.IsPrintLnMethod, TokenType.PRINT_NEWLINE);
                 ProcessToken(currentToken, TokenParsers.IsVariableDeclaration, TokenType.VARIABLE_DECLARATION);

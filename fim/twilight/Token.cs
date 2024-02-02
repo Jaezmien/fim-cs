@@ -19,7 +19,7 @@
         FUNCTION_MAIN,
         FUNCTION_FOOTER,
 
-        FUNCITON_RETURN,
+        FUNCTION_RETURN,
         FUNCTION_PARAMETER,
 
         PRINT,

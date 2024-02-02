@@ -33,5 +33,30 @@
             dequeueAmount = EXPECTED_TOKENS.Length - 1;
             return true;
         }
+        internal static bool IsFunctionParameter(Token currentToken, Queue<Token> oldTokens, out int dequeueAmount)
+        {
+            dequeueAmount = -1;
+
+            if( currentToken.Value != "using" ) { return false;  }
+
+            dequeueAmount = 0;
+            return true;
+        }
+        internal static bool IsFunctionReturn(Token currentToken, Queue<Token> oldTokens, out int dequeueAmount)
+        {
+            dequeueAmount = -1;
+
+            if( currentToken.Value == "with" ) {
+                dequeueAmount = 0;
+                return true;
+            }
+            if (FullTokenLexer.CheckTokenSequence(currentToken, oldTokens, new string[] { "to", " ", "get" }))
+            {
+                dequeueAmount = 2;
+                return true;
+            }
+
+            return false;
+        }
     }
 }
