@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace fim.twilight
+﻿namespace fim.twilight
 {
     internal class Lexer
     {
@@ -14,10 +12,7 @@ namespace fim.twilight
             Tokens = FullTokenLexer.MergeLiterals(Tokens);
             Tokens = FullTokenLexer.CleanTokens(Tokens);
 
-            Console.WriteLine(string.Join("\n", Tokens.Select(t => $"{"\"" +t.Value + "\"",-32} - ({t.Type})")));
-
             return Tokens.ToArray<Token>();
         }
-
     }
 }
