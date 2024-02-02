@@ -181,8 +181,10 @@
                 if( currentToken.Type == TokenType.WHITESPACE ) { continue;  }
                 if( currentToken.Type == TokenType.COMMENT_PAREN ) { continue;  }
                 if( currentToken.Type == TokenType.COMMENT_POSTSCRIPT ) {
-                    while (oldTokens.Count > 0 && oldTokens.Dequeue().Type != TokenType.NEWLINE) ;
-                    continue; 
+                    while (oldTokens.Count > 0 && currentToken.Type != TokenType.NEWLINE)
+                    {
+                        currentToken = oldTokens.Dequeue();
+                    }
                 }
                 if( currentToken.Type == TokenType.NEWLINE ) { continue;  }
 
