@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace fim
+namespace fim.spike
 {
     public class FiMException : Exception
     {
