@@ -8,6 +8,9 @@ namespace fim.spike.Nodes
         public bool IsMain = false;
         public StatementsNode? Statements = null;
 
+        public VarType? ReturnType = null;
+        public Dictionary<string, VarType>? ParametersType = null;
+
         public static FunctionNode Parse(AST ast)
         {
             FunctionNode node = new();
