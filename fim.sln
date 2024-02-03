@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fim", "fim\fim.csproj", "{4
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fim.cli", "fim.cli\fim.cli.csproj", "{8E902EFB-F2B2-41EC-9AD4-FC0080E25093}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fim.test", "fim.test\fim.test.csproj", "{3862D4E7-EB2E-46FB-92CF-940C53092F74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fim.test", "fim.test\fim.test.csproj", "{3862D4E7-EB2E-46FB-92CF-940C53092F74}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
