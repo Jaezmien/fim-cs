@@ -1,19 +1,19 @@
-﻿using fim.spike;
-using fim.spike.Nodes;
+﻿using fim.celestia;
+using fim.spike;
 using fim.twilight;
 
 namespace fim 
 {
     public class Letter
     {
-        public Letter(string report)
+        public static Interpreter WriteLetter(string contents)
         {
-            var tokens = Lexer.Parse(report);
-            var ast = new AST(tokens, report);
-            var letter = Report.Parse(ast);
+            var tokens = Lexer.Parse(contents);
 
-            Console.WriteLine(letter.Name);
-            Console.WriteLine(letter.Author);
+
+            var ast = spike.Nodes.Report.Parse(new AST(tokens, contents));
+
+            return new Interpreter(ast);
         }
     }
 }
