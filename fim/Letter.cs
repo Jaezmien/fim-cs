@@ -15,7 +15,7 @@ namespace fim
         public static Interpreter WriteLetter(string contents)
         {
             var ast = PrepareLetter(contents);
-            return new Interpreter(ast);
+            return new Interpreter(ast, contents);
         }
     }
 }
