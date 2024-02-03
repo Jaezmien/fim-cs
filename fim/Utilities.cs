@@ -17,14 +17,13 @@ namespace fim
         public static bool IsIndentCharacter(char c) { return c == ' ' || c == '\t'; }
         public static bool IsIndentCharacter(string c ) {  return c.Length == 1 && IsIndentCharacter(char.Parse(c)); }
 
-        public static VarType GetType(TokenType tokenType)
+        public static bool IsSameClass(Type a, Type b) => a == b;
+        public static bool IsSameClassOrSubclass(Type a, Type b) => IsSameClass(a, b) || a.IsSubclassOf(b);
+
+        public static VarType ConvertTypeHint(TokenType tokenType)
         {
             return tokenType switch
             {
-                TokenType.BOOLEAN => VarType.BOOLEAN,
-                TokenType.NUMBER => VarType.NUMBER,
-                TokenType.CHAR => VarType.CHAR,
-                TokenType.STRING => VarType.STRING,
                 TokenType.TYPE_BOOLEAN => VarType.BOOLEAN,
                 TokenType.TYPE_NUMBER => VarType.NUMBER,
                 TokenType.TYPE_CHAR => VarType.CHAR,
@@ -35,46 +34,74 @@ namespace fim
                 _ => VarType.UNKNOWN,
             };
         }
-        public static object GetDefaultValue(VarType type)
+        public static VarType ConvertType(TokenType tokenType)
         {
-            switch(type)
+            return tokenType switch
             {
-                case VarType.BOOLEAN: return false;
-                case VarType.CHAR: return '\0';
-                case VarType.STRING: return "";
-                case VarType.NUMBER: return 0;
-                default: return null;
-            }
+                TokenType.BOOLEAN => VarType.BOOLEAN,
+                TokenType.NUMBER => VarType.NUMBER,
+                TokenType.CHAR => VarType.CHAR,
+                TokenType.STRING => VarType.STRING,
+                _ => VarType.UNKNOWN,
+            };
+        }
+
+        public static object? GetDefaultValue(VarType type)
+        {
+            return type switch
+            {
+                VarType.BOOLEAN => false,
+                VarType.CHAR => '\0',
+                VarType.STRING => "",
+                VarType.NUMBER => 0,
+                _ => null,
+            };
         }
 
         public static ValueNode CreateValueNode(List<Token> tokens, VarType? possibleNullType = null)
         {
+            if( tokens.Count == 0 && possibleNullType != null)
+            {
+                LiteralNode node = new()
+                {
+                    Start = 0, 
+                    Length = 0,
+                    Type = (VarType)possibleNullType,
+                    Value = GetDefaultValue((VarType)possibleNullType)!
+                };
+
+                return node;
+            }
             if( tokens.Count == 1 )
             {
                 var token = tokens[0];
 
                 if( token.Type == TokenType.LITERAL )
                 {
-                    IdentifierNode iNode = new();
-                    iNode.Identifier = token.Value;
-                    iNode.Start = token.Start;
-                    iNode.Length = token.Length;
+                    IdentifierNode iNode = new()
+                    {
+                        Identifier = token.Value,
+                        Start = token.Start,
+                        Length = token.Length
+                    };
 
                     return iNode;
                 }
 
-                LiteralNode lNode = new();
-                lNode.Start = token.Start;
-                lNode.Length = token.Length;
-                lNode.Type = GetType(token.Type);
-                if( lNode.Type != VarType.UNKNOWN )
+                LiteralNode lNode = new()
+                {
+                    Start = token.Start,
+                    Length = token.Length,
+                    Type = ConvertType(token.Type)
+                };
+                if ( lNode.Type != VarType.UNKNOWN )
                 {
                     lNode.Value = token.Value;
                     return lNode;
                 }
                 if( token.Type == TokenType.NULL && possibleNullType != null )
                 {
-                    lNode.Value = GetDefaultValue(lNode.Type);
+                    lNode.Value = GetDefaultValue(lNode.Type)!;
                     return lNode;
                 }
             }

@@ -18,12 +18,12 @@ namespace fim.spike.Nodes
             node.Identifier = ast.Consume(TokenType.LITERAL, "Expected LITERAL").Value;
             ast.Consume(TokenType.OPERATOR_EQ, "Expected OPERATOR_EQ");
             Token typeToken = ast.Peek();
-            node.Type = Utilities.GetType(typeToken.Type);
+            node.Type = Utilities.ConvertTypeHint(typeToken.Type);
             if( node.Type == VarType.UNKNOWN ) { ast.ThrowSyntaxError(typeToken, "Expected variable type"); }
             ast.Next();
 
             var valueTokens = ast.ConsumeUntilMatch(TokenType.PUNCTUATION, "Could not find PUNCTUATION");
-            node.Value = Utilities.CreateValueNode(valueTokens);
+            node.Value = Utilities.CreateValueNode(valueTokens, node.Type);
             Token endToken = ast.Consume(TokenType.PUNCTUATION, "Expected PUNCTUATION.");
 
             node.Start = startToken.Start;
