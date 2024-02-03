@@ -27,7 +27,7 @@
 
                 ProcessType(currentToken.Length > 1 && currentToken.Value.StartsWith("\"") && currentToken.Value.EndsWith("\""), TokenType.STRING);
                 ProcessType(currentToken.Length > 1 && currentToken.Value.StartsWith("'") && currentToken.Value.EndsWith("'"), TokenType.CHAR);
-                ProcessType(currentToken.Length > 1 && double.TryParse(currentToken.Value, out double _), TokenType.NUMBER);
+                ProcessType(currentToken.Length > 1 && double.TryParse(currentToken.Value, out double _) || int.TryParse(currentToken.Value, out int _), TokenType.NUMBER);
                 ProcessType(currentToken.Length > 1 && Array.IndexOf(new string[] {"yes", "true", "right", "correct", "no", "false", "wrong", "incorrect"}, currentToken.Value) != -1, TokenType.BOOLEAN);
                 ProcessType(currentToken.Value == "nothing", TokenType.NULL);
 
@@ -83,7 +83,9 @@
                 ProcessToken(currentToken, TokenParsers.IsFunctionReturn, TokenType.FUNCTION_RETURN);
                 ProcessToken(currentToken, TokenParsers.IsPrintMethod, TokenType.PRINT);
                 ProcessToken(currentToken, TokenParsers.IsPrintLnMethod, TokenType.PRINT_NEWLINE);
+
                 ProcessToken(currentToken, TokenParsers.IsVariableDeclaration, TokenType.VARIABLE_DECLARATION);
+                ProcessToken(currentToken, TokenParsers.IsVariableModifier, TokenType.VARIABLE_MODIFY);
 
                 ProcessToken(currentToken, TokenParsers.IsBooleanType, TokenType.TYPE_BOOLEAN);
                 ProcessToken(currentToken, TokenParsers.IsBooleanArrayType, TokenType.TYPE_BOOLEAN_ARRAY);
@@ -126,8 +128,6 @@
                 while( literalToken.Count > 0 )
                 {
                     Token addToken = literalToken.Dequeue();
-                    // TODO: This is a language error - this means that the variable has a trailing whitespace.
-                    // if( literalToken.Count == 0 && addToken.Type == TokenType.WHITESPACE ) { continue; }
                     newToken.Value += addToken.Value;
                     newToken.Length += addToken.Length;
                 }

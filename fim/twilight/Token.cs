@@ -25,7 +25,9 @@
         PRINT,
         PRINT_NEWLINE,
         PROMPT,
+
         VARIABLE_DECLARATION,
+        VARIABLE_MODIFY,
 
         STRING,
         CHAR,

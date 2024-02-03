@@ -29,6 +29,12 @@ namespace fim.spike.Nodes
                     node.Statements.Add(printNode);
                     continue;
                 }
+                if( ast.Peek().Type == TokenType.LITERAL && ast.PeekNext().Type == TokenType.VARIABLE_MODIFY )
+                {
+                    var modifyNode = VariableModifyNode.Parse(ast);
+                    node.Statements.Add(modifyNode);
+                    continue;
+                }
 
                 ast.Next();
             }
