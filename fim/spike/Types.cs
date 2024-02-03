@@ -1,6 +1,6 @@
 ﻿namespace fim.spike
 {
-    internal enum VarType
+    public enum VarType
     {
         UNKNOWN = 0,
 

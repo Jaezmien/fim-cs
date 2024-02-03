@@ -2,7 +2,7 @@
 
 namespace fim.spike.Nodes
 {
-    internal class PrintNode : Node
+    public class PrintNode : Node
     {
         public bool NewLine = false;
         public ValueNode? Value = null;

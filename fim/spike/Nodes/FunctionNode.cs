@@ -2,7 +2,7 @@
 
 namespace fim.spike.Nodes
 {
-    internal class FunctionNode : Node
+    public class FunctionNode : Node
     {
         public string Name = "";
         public bool IsMain = false;

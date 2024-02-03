@@ -1,6 +1,6 @@
 ﻿namespace fim.spike.Nodes
 {
-    internal class LiteralNode : ValueNode
+    public class LiteralNode : ValueNode
     {
         public string RawValue = "";
         public object Value

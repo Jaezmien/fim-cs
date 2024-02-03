@@ -4,7 +4,7 @@ using System.Text;
 
 namespace fim.spike
 {
-    internal class AST
+    public class AST
     {
         private readonly Token[] Tokens;
         private readonly string Report;

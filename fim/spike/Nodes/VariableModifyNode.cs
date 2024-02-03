@@ -3,7 +3,7 @@ using fim.spike;
 
 namespace fim.spike.Nodes
 {
-    internal class VariableModifyNode : Node
+    public class VariableModifyNode : Node
     {
         public string Identifier = "";
         public ValueNode? Value = null;

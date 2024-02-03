@@ -3,7 +3,7 @@ using fim.spike;
 
 namespace fim.spike.Nodes
 {
-    internal class VariableDeclarationNode : Node
+    public class VariableDeclarationNode : Node
     {
         public string Identifier = "";
         public bool isConstant = false;

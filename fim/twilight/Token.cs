@@ -1,6 +1,6 @@
 ﻿namespace fim.twilight
 {
-    internal enum TokenType
+    public enum TokenType
     {
         UNKNOWN = 0,
 
@@ -61,13 +61,13 @@
         public int Start { get; set; }
         public int Length { get; set; }
     }
-    internal class RawToken : IPosition
+    public class RawToken : IPosition
     {
         public string Value = "";
         public int Start { get; set; }
         public int Length { get; set; }
     }
-    internal class Token : RawToken
+    public class Token : RawToken
     {
         public TokenType Type;
     }

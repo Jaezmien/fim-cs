@@ -2,7 +2,7 @@
 
 namespace fim.spike.Nodes
 {
-    internal class Report : Node
+    public class Report : Node
     {
         public string Name = "";
         public string Author = "";

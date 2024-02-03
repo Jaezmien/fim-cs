@@ -2,7 +2,7 @@
 
 namespace fim.spike.Nodes
 {
-    internal class StatementsNode : Node 
+    public class StatementsNode : Node 
     {
         public List<Node> Statements = new();
 
