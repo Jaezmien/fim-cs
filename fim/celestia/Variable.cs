@@ -5,16 +5,30 @@ namespace fim.celestia
     public class Variable
     {
         public readonly string Name;
-        public object? Value;
+        private object? _Value;
         internal VarType Type;
         public readonly bool IsConstant;
 
         internal Variable(string name, object? value, VarType type, bool isConstant = false)
         {
             Name = name;
-            Value = value;
+            _Value = value;
             Type = type; 
             IsConstant = isConstant;
+        }
+
+        public object? Value
+        {
+            get
+            {
+                return _Value;
+            }
+            set
+            {
+                if( value.GetType() != _Value.GetType() ) throw new ArgumentException( "Mismatch value types" );
+
+                _Value = value;
+            }
         }
     }
     public class VariableManager
@@ -58,7 +72,7 @@ namespace fim.celestia
         public void PopFunctionStack() => this.LocalVariables.Pop();
 
         public bool Has(string name, bool local = true) => this.Get(name, local) != null;
-        public Variable? Get(string name, bool local = true)
+        internal Variable? Get(string name, bool local = true)
         {
             var variable = this.GlobalVariables.FirstOrDefault(v => v.Name == name);
             if (variable != null) return variable;
@@ -70,6 +84,10 @@ namespace fim.celestia
             }
 
             return null;
+        }
+        public Variable? Get(string name)
+        {
+            return this.Get(name, false);
         }
     }
 }
