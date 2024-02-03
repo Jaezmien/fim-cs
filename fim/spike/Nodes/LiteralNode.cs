@@ -7,8 +7,8 @@
         {
             get
             {
-                if( Type == VarType.STRING ) { return RawValue.Substring(1, RawValue.Length - 1); }
-                if( Type == VarType.CHAR ) { return char.Parse(RawValue.Substring(1, RawValue.Length - 1)); }
+                if( Type == VarType.STRING ) { return RawValue[1..^1]; }
+                if( Type == VarType.CHAR ) { return char.Parse(RawValue[1..^1]); }
                 if( Type == VarType.BOOLEAN ) { return Array.IndexOf(new string[] { "yes", "true", "right", "correct" }, RawValue) != -1;  }
                 if( Type == VarType.NUMBER ) { return double.Parse(RawValue); }
 
@@ -16,7 +16,7 @@
             }
             set
             {
-                RawValue = value.ToString();
+                RawValue = Convert.ToString(value)!;
             }
         }
         public VarType Type = VarType.UNKNOWN;
