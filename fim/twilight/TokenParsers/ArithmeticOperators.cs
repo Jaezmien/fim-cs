@@ -22,16 +22,6 @@
             dequeueAmount = 0;
             return true;
         }
-        internal static bool IsUnaryIncrement(Token currentToken, Queue<Token> oldTokens, out int dequeueAmount)
-        {
-            dequeueAmount = -1;
-
-            string[] MULTI_TOKENS = { "got", " ", "one", " ", "more" };
-            if( !FullTokenLexer.CheckTokenSequence(currentToken, oldTokens, MULTI_TOKENS) ) { return false;  }
-
-            dequeueAmount = MULTI_TOKENS.Length - 1;
-            return true;
-        }
 
         internal static bool IsInfixSubtraction(Token currentToken, Queue<Token> oldTokens, out int dequeueAmount)
         {
@@ -61,16 +51,6 @@
             }
 
             return false;
-        }
-        internal static bool IsUnaryDecrement(Token currentToken, Queue<Token> oldTokens, out int dequeueAmount)
-        {
-            dequeueAmount = -1;
-
-            string[] MULTI_TOKENS = { "got", " ", "one", " ", "less" };
-            if( !FullTokenLexer.CheckTokenSequence(currentToken, oldTokens, MULTI_TOKENS) ) { return false;  }
-
-            dequeueAmount = MULTI_TOKENS.Length - 1;
-            return true;
         }
 
         internal static bool IsInfixMultiplication(Token currentToken, Queue<Token> oldTokens, out int dequeueAmount)

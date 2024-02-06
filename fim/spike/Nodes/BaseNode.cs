@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace fim.spike.Nodes
+﻿namespace fim.spike.Nodes
 {
     public abstract class Node
     {
@@ -20,6 +14,6 @@ namespace fim.spike.Nodes
     }
     public abstract class ValueNode : Node
     {
-        // Can be a LiteralNode, IdentifierNode, or a BinaryExpressionNode*
+        // Can be a LiteralNode, IdentifierNode, or an <T>ExpressionNode.
     }
 }

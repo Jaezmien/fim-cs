@@ -99,10 +99,8 @@
 
                 ProcessToken(currentToken, TokenParsers.IsInfixAddition, TokenType.OPERATOR_ADD_INFIX);
                 ProcessToken(currentToken, TokenParsers.IsPrefixAddition, TokenType.OPERATOR_ADD_PREFIX);
-                ProcessToken(currentToken, TokenParsers.IsUnaryIncrement, TokenType.UNARY_INCREMENT);
                 ProcessToken(currentToken, TokenParsers.IsInfixSubtraction, TokenType.OPERATOR_SUB_INFIX);
                 ProcessToken(currentToken, TokenParsers.IsPrefixSubtraction, TokenType.OPERATOR_SUB_PREFIX);
-                ProcessToken(currentToken, TokenParsers.IsUnaryDecrement, TokenType.UNARY_DECREMENT);
                 ProcessToken(currentToken, TokenParsers.IsInfixMultiplication, TokenType.OPERATOR_MUL_INFIX);
                 ProcessToken(currentToken, TokenParsers.IsPrefixMultiplication, TokenType.OPERATOR_MUL_PREFIX);
                 ProcessToken(currentToken, TokenParsers.IsInfixDivision, TokenType.OPERATOR_DIV_INFIX);
@@ -114,6 +112,10 @@
                 ProcessToken(currentToken, TokenParsers.IsLessThanOperator, TokenType.OPERATOR_LT);
                 ProcessToken(currentToken, TokenParsers.IsNotEqualOperator, TokenType.OPERATOR_NEQ);
                 ProcessToken(currentToken, TokenParsers.IsEqualOperator, TokenType.OPERATOR_EQ);
+
+                ProcessToken(currentToken, TokenParsers.IsUnaryIncrement, TokenType.UNARY_INCREMENT);
+                ProcessToken(currentToken, TokenParsers.IsUnaryDecrement, TokenType.UNARY_DECREMENT);
+                ProcessToken(currentToken, TokenParsers.IsUnaryNot, TokenType.UNARY_NOT);
 
                 ProcessToken(currentToken, TokenParsers.IsConstantKeyword, TokenType.KEYWORD_CONSTANT);
                 ProcessToken(currentToken, TokenParsers.IsAndKeyword, TokenType.KEYWORD_AND);

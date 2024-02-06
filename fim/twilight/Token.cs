@@ -51,6 +51,8 @@
         OPERATOR_LT,
         OPERATOR_LTE,
 
+        UNARY_NOT,
+
         OPERATOR_ADD_INFIX,
         OPERATOR_ADD_PREFIX,
         UNARY_INCREMENT,

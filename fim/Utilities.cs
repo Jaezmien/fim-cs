@@ -130,6 +130,20 @@ namespace fim
             }
             else
             {
+                if (tokens.FirstOrDefault()?.Type == TokenType.UNARY_NOT)
+                {
+                    var firstToken = tokens.First();
+                    var valueNode = Utilities.CreateValueNode(tokens.GetRange(1, tokens.Count - 1));
+
+                    return new UnaryExpressionNode()
+                    {
+                        Start = firstToken.Start,
+                        Length = valueNode.Start + valueNode.Length - firstToken.Start,
+                        Operator = UnaryExpressionOperator.NOT,
+                        Value = valueNode, 
+                    };
+                }
+
                 BinaryExpressionNode? node = null;
                 void CheckExpression(Func<bool> predicate, Func<int> index, BinaryExpressionOperator op, BinaryExpressionType type)
                 {

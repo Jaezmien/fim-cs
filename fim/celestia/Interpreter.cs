@@ -1,5 +1,6 @@
 ﻿using fim.spike;
 using fim.spike.Nodes;
+using System.ComponentModel.DataAnnotations;
 
 namespace fim.celestia
 {
@@ -102,6 +103,17 @@ namespace fim.celestia
                     BinaryExpressionOperator.OR => (bool)left || (bool)right,
                     _ => throw new NotImplementedException("Unknown operator: " + bNode.Operator),
                 };
+            }
+            else if( Utilities.IsSameClass(node.GetType(), typeof(UnaryExpressionNode)))
+            {
+                var uNode = (UnaryExpressionNode)node;
+                var value = EvaluateValueNode(uNode.Value, out var valueType, local);
+
+                if( value != null && uNode.Operator == UnaryExpressionOperator.NOT )
+                {
+                    if (valueType != VarType.BOOLEAN) throw new Exception("Invalid usage of NOT unary");
+                    return !(bool)value;
+                }
             }
 
             throw new Exception("Unknown value: " + node);
