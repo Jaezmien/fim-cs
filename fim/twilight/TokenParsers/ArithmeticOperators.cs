@@ -22,7 +22,7 @@
             dequeueAmount = 0;
             return true;
         }
-        internal static bool IsIncrementSuffix(Token currentToken, Queue<Token> oldTokens, out int dequeueAmount)
+        internal static bool IsUnaryIncrement(Token currentToken, Queue<Token> oldTokens, out int dequeueAmount)
         {
             dequeueAmount = -1;
 
@@ -62,7 +62,7 @@
 
             return false;
         }
-        internal static bool IsDecrementSuffix(Token currentToken, Queue<Token> oldTokens, out int dequeueAmount)
+        internal static bool IsUnaryDecrement(Token currentToken, Queue<Token> oldTokens, out int dequeueAmount)
         {
             dequeueAmount = -1;
 
