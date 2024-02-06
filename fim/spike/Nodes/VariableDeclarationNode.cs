@@ -17,6 +17,14 @@ namespace fim.spike.Nodes
             Token startToken = ast.Consume(TokenType.VARIABLE_DECLARATION, "Expected VARIABLE_DECLARATION");
             node.Identifier = ast.Consume(TokenType.LITERAL, "Expected LITERAL").Value;
             ast.Consume(TokenType.OPERATOR_EQ, "Expected OPERATOR_EQ");
+
+            Token constantToken = ast.Peek();
+            if( constantToken.Type == TokenType.KEYWORD_CONSTANT )
+            {
+                node.isConstant = true;
+                ast.Next();
+            }
+
             Token typeToken = ast.Peek();
             node.Type = Utilities.ConvertTypeHint(typeToken.Type);
             if( node.Type == VarType.UNKNOWN ) { ast.ThrowSyntaxError(typeToken, "Expected variable type"); }
