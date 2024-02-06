@@ -22,7 +22,7 @@ namespace fim.spike.Nodes
             else { possibleType = null; }
 
             var valueTokens = ast.ConsumeUntilMatch(TokenType.PUNCTUATION, "Could not find PUNCTUATION");
-            node.Value = Utilities.CreateValueNode(valueTokens, possibleType);
+            node.Value = AST.CreateValueNode(valueTokens, possibleType);
             Token endToken = ast.Consume(TokenType.PUNCTUATION, "Expected PUNCTUATION.");
 
             node.Start = startToken.Start;
