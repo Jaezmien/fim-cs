@@ -7,7 +7,7 @@ namespace fim.celestia
     {
         private Report ReportNode;
         private string Report;
-        internal Interpreter(Report reportNode, string report)
+        public Interpreter(Report reportNode, string report)
         {
             this.ReportNode = reportNode;
             this.Report = report;

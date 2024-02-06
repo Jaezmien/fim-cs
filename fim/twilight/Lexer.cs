@@ -1,6 +1,6 @@
 ﻿namespace fim.twilight
 {
-    internal class Lexer
+    public class Lexer
     {
         public static Token[] Parse(string report)
         {
