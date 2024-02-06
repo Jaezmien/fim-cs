@@ -4,7 +4,7 @@
     {
         public static Token[] Parse(string report)
         {
-            Queue<RawToken> RawTokens = RawTokenLexer.CreateRawTokens(report);
+            Queue<RawToken> RawTokens = RawTokenLexer.CreateRawTokens(report.Replace('“', '"').Replace('”', '"'));
             RawTokens = RawTokenLexer.MergeRawTokens(RawTokens);
 
             Queue<Token> Tokens = FullTokenLexer.CreateTokens(RawTokens);
