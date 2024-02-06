@@ -25,7 +25,7 @@ namespace fim.celestia
             }
             set
             {
-                if( value.GetType() != _Value.GetType() ) throw new ArgumentException( "Mismatch value types" );
+                if( value?.GetType() != _Value?.GetType() ) throw new ArgumentException( "Mismatch value types" );
 
                 _Value = value;
             }

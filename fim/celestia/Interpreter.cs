@@ -6,8 +6,8 @@ namespace fim.celestia
 {
     public class Interpreter
     {
-        private Report ReportNode;
-        private string Report;
+        private readonly Report ReportNode;
+        private readonly string Report;
         public Interpreter(Report reportNode, string report)
         {
             this.ReportNode = reportNode;
@@ -133,7 +133,7 @@ namespace fim.celestia
                 if( Utilities.IsSameClass(statement.GetType(), typeof(VariableDeclarationNode)))
                 {
                     var vdNode = (VariableDeclarationNode)statement;
-                    Variable var = new Variable(vdNode.Identifier, EvaluateValueNode(vdNode.Value, out _, true), vdNode.Type, vdNode.isConstant);
+                    Variable var = new(vdNode.Identifier, EvaluateValueNode(vdNode.Value, out _, true), vdNode.Type, vdNode.isConstant);
                     Variables.Push(var, false);
                 }
                 if( Utilities.IsSameClass(statement.GetType(), typeof(VariableModifyNode)))
@@ -142,7 +142,7 @@ namespace fim.celestia
                     Variable? var = Variables.Get(vmNode.Identifier, true);
 
                     if( var == null ) ThrowRuntimeError(vmNode, "Variable " + vmNode.Identifier + " not found.");
-                    if( var.IsConstant ) ThrowRuntimeError(vmNode, "Tried to modify variable " + vmNode.Identifier + ", which is a constant.");
+                    if( var!.IsConstant ) ThrowRuntimeError(vmNode, "Tried to modify variable " + vmNode.Identifier + ", which is a constant.");
 
                     var value = EvaluateValueNode(vmNode.Value, out VarType valueType, true);
 
