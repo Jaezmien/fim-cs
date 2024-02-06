@@ -65,6 +65,7 @@ namespace fim.twilight
 
                 ProcessToken(currentToken, CanMergeDecimal);
                 ProcessToken(currentToken, CanMergeString);
+                ProcessToken(currentToken, CanMergeChar);
                 ProcessToken(currentToken, CanMergeDelimiters);
 
                 if( currentToken.Length == 1 && currentToken.Value == "\n" )
@@ -130,6 +131,24 @@ namespace fim.twilight
 
             dequeueAmount = endTokenIndex + 1;
             return true;
+        }
+        internal static bool CanMergeChar(RawToken currentToken, Queue<RawToken> oldTokens, out int dequeueAmount)
+        {
+            const string DELIMITER = "\'";
+
+            dequeueAmount = -1;
+            if( currentToken.Value != DELIMITER ) { return false;  }
+
+            if( oldTokens.Count > 2 && oldTokens.ElementAt(0).Value == "\\" && oldTokens.ElementAt(2).Value == DELIMITER ) {
+                dequeueAmount = 3;
+                return true;
+            }
+            if( oldTokens.Count > 1 && oldTokens.ElementAt(1).Value == DELIMITER ) {
+                dequeueAmount = 2;
+                return true;
+            }
+
+            return false;
         }
         internal static bool CanMergeDelimiters(RawToken currentToken, Queue<RawToken> oldTokens, out int dequeueAmount )
         {
