@@ -20,6 +20,29 @@ namespace fim
         public static bool IsSameClass(Type a, Type b) => a == b;
         public static bool IsSameClassOrSubclass(Type a, Type b) => IsSameClass(a, b) || a.IsSubclassOf(b);
 
+        public static bool IsTypeHintArray(TokenType tokenType)
+        {
+
+            return tokenType switch
+            {
+                TokenType.TYPE_BOOLEAN_ARRAY => true,
+                TokenType.TYPE_NUMBER_ARRAY => true,
+                TokenType.TYPE_STRING_ARRAY => true,
+                _ => false,
+            };
+        }
+        public static bool IsTypeArray(VarType varType)
+        {
+
+            return varType switch
+            {
+                VarType.STRING_ARRAY => true,
+                VarType.BOOLEAN_ARRAY => true,
+                VarType.NUMBER_ARRAY => true,
+                _ => false,
+            };
+        }
+
         public static VarType ConvertTypeHint(TokenType tokenType)
         {
             return tokenType switch
@@ -107,6 +130,85 @@ namespace fim
             }
             else
             {
+                BinaryExpressionNode? node = null;
+                void CheckExpression(Func<bool> predicate, Func<int> index, BinaryExpressionOperator op, BinaryExpressionType type)
+                {
+                    if (node != null) return;
+                    if (!predicate()) return;
+                    var lastIndex = index();
+                    var leftNode = Utilities.CreateValueNode(tokens.GetRange(0, lastIndex));
+                    var rightNode = Utilities.CreateValueNode(tokens.GetRange(lastIndex + 1, tokens.Count - lastIndex - 1));
+
+                    node = new BinaryExpressionNode()
+                    {
+                        Left = leftNode,
+                        Right = rightNode,
+                        Operator = op,
+                        Type = type,
+                        Start = leftNode.Start,
+                        Length = rightNode.Start + rightNode.Length - leftNode.Start,
+                    };
+                }
+
+                CheckExpression(
+                    () => tokens.FindIndex(t => t.Type == TokenType.KEYWORD_AND) != -1,
+                    () => tokens.FindLastIndex(t => t.Type == TokenType.KEYWORD_AND),
+                    BinaryExpressionOperator.AND, BinaryExpressionType.RELATIONAL
+                );
+                CheckExpression(
+                    () => tokens.FindIndex(t => t.Type == TokenType.KEYWORD_OR) != -1,
+                    () => tokens.FindLastIndex(t => t.Type == TokenType.KEYWORD_OR),
+                    BinaryExpressionOperator.OR, BinaryExpressionType.RELATIONAL
+                );
+
+                CheckExpression(
+                    () => tokens.FindIndex(t => t.Type == TokenType.OPERATOR_MUL_INFIX) != -1,
+                    () => tokens.FindLastIndex(t => t.Type == TokenType.OPERATOR_MUL_INFIX),
+                    BinaryExpressionOperator.MUL, BinaryExpressionType.ARITHMETIC
+                );
+                CheckExpression(
+                    () => tokens.FindIndex(t => t.Type == TokenType.OPERATOR_DIV_INFIX) != -1,
+                    () => tokens.FindLastIndex(t => t.Type == TokenType.OPERATOR_DIV_INFIX),
+                    BinaryExpressionOperator.DIV, BinaryExpressionType.ARITHMETIC
+                );
+                CheckExpression(
+                    () => tokens.FindIndex(t => t.Type == TokenType.OPERATOR_ADD_INFIX) != -1,
+                    () => tokens.FindLastIndex(t => t.Type == TokenType.OPERATOR_ADD_INFIX),
+                    BinaryExpressionOperator.ADD, BinaryExpressionType.ARITHMETIC
+                );
+                CheckExpression(
+                    () => tokens.FindIndex(t => t.Type == TokenType.OPERATOR_SUB_INFIX) != -1,
+                    () => tokens.FindLastIndex(t => t.Type == TokenType.OPERATOR_SUB_INFIX),
+                    BinaryExpressionOperator.SUB, BinaryExpressionType.ARITHMETIC
+                );
+
+                if( node != null ) { return node;  }
+
+                if( tokens.FirstOrDefault() != null && Utilities.ConvertTypeHint(tokens.First().Type) != VarType.UNKNOWN )
+                {
+                    var expectedType = Utilities.ConvertTypeHint(tokens.First().Type);
+                    var vNode = Utilities.CreateValueNode(tokens.Skip(1).ToList());
+
+                    if( Utilities.IsSameClass(vNode.GetType(), typeof(LiteralNode)))
+                    {
+                        var lNode = (LiteralNode)vNode;
+                        if( lNode.Type != expectedType ) { throw new Exception("Expected type " + expectedType + ", got " + lNode.Type);  }
+                    }
+                    /*else if( Utilities.IsSameClass(vNode.GetType(), typeof(IdentifierNode)))
+                    {
+                        var lNode = (LiteralNode)vNode;
+                        if( lNode.Type != expectedType ) { throw new Exception("Expected type " + expectedType + ", got " + lNode.Type);  }
+                    }*/
+                    else if( Utilities.IsSameClass(vNode.GetType(), typeof(BinaryExpressionNode)))
+                    {
+                        var bNode = (BinaryExpressionNode)vNode;
+                        if( bNode.Type == BinaryExpressionType.ARITHMETIC && expectedType != VarType.NUMBER ) { throw new Exception("Expected type " + expectedType + ", got " + bNode.Type);  }
+                        else if( bNode.Type == BinaryExpressionType.RELATIONAL && expectedType != VarType.BOOLEAN ) { throw new Exception("Expected type " + expectedType + ", got " + bNode.Type);  }
+                    }
+
+                    return vNode;
+                }
+
                 throw new NotImplementedException();
             }
 

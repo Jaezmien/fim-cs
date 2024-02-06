@@ -97,6 +97,17 @@
 
                 ProcessToken(currentToken, TokenParsers.IsPostScriptSequence, TokenType.COMMENT_POSTSCRIPT);
 
+                ProcessToken(currentToken, TokenParsers.IsInfixAddition, TokenType.OPERATOR_ADD_INFIX);
+                ProcessToken(currentToken, TokenParsers.IsPrefixAddition, TokenType.OPERATOR_ADD_PREFIX);
+                ProcessToken(currentToken, TokenParsers.IsIncrementSuffix, TokenType.INCREMENT);
+                ProcessToken(currentToken, TokenParsers.IsInfixSubtraction, TokenType.OPERATOR_SUB_INFIX);
+                ProcessToken(currentToken, TokenParsers.IsPrefixSubtraction, TokenType.OPERATOR_SUB_PREFIX);
+                ProcessToken(currentToken, TokenParsers.IsDecrementSuffix, TokenType.DECREMENT);
+                ProcessToken(currentToken, TokenParsers.IsInfixMultiplication, TokenType.OPERATOR_MUL_INFIX);
+                ProcessToken(currentToken, TokenParsers.IsPrefixMultiplication, TokenType.OPERATOR_MUL_PREFIX);
+                ProcessToken(currentToken, TokenParsers.IsInfixDivision, TokenType.OPERATOR_DIV_INFIX);
+                ProcessToken(currentToken, TokenParsers.IsPrefixDivision, TokenType.OPERATOR_DIV_PREFIX);
+
                 ProcessToken(currentToken, TokenParsers.IsLessThanEqualOperator, TokenType.OPERATOR_LTE);
                 ProcessToken(currentToken, TokenParsers.IsGreaterThanEqualOperator, TokenType.OPERATOR_GTE);
                 ProcessToken(currentToken, TokenParsers.IsGreaterThanOperator, TokenType.OPERATOR_GT);

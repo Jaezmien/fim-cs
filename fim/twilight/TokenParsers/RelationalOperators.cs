@@ -114,7 +114,6 @@
             dequeueAmount = NEXT_TOKENS.Length;
             return true;
         }
-
         internal static bool IsNotEqualOperator(Token currentToken, Queue<Token> oldTokens, out int dequeueAmount)
         {
             dequeueAmount = -1;
@@ -149,7 +148,6 @@
 
             return false;
         }
-
         internal static bool IsEqualOperator(Token currentToken, Queue<Token> oldTokens, out int dequeueAmount)
         {
             dequeueAmount = -1;

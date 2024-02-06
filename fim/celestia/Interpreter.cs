@@ -77,8 +77,34 @@ namespace fim.celestia
                     return variable.Value;
                 }
             }
+            else if (Utilities.IsSameClass(node.GetType(), typeof(BinaryExpressionNode)))
+            {
+                var bNode = (BinaryExpressionNode)node;
+                var left = EvaluateValueNode(bNode.Left, out var leftType, local);
+                var right = EvaluateValueNode(bNode.Right, out var rightType, local);
 
-            return null;
+                if (left == null || right == null) return null;
+                if (leftType != rightType) throw new Exception("Type mismatch");
+                if (Utilities.IsTypeArray(leftType)) throw new Exception("Binary expression of an array");
+                if (bNode.Type == BinaryExpressionType.ARITHMETIC && leftType != VarType.NUMBER) throw new Exception("Expected type double in arithmetic expression.");
+                if (bNode.Type == BinaryExpressionType.RELATIONAL && leftType != VarType.BOOLEAN) throw new Exception("Expected type boolean in relational expression.");
+
+                if (bNode.Type == BinaryExpressionType.ARITHMETIC) resultType = VarType.NUMBER;
+                if (bNode.Type == BinaryExpressionType.RELATIONAL) resultType = VarType.BOOLEAN;
+
+                return bNode.Operator switch
+                {
+                    BinaryExpressionOperator.ADD => (double)left + (double)right,
+                    BinaryExpressionOperator.SUB => (double)left - (double)right,
+                    BinaryExpressionOperator.MUL => (double)left * (double)right,
+                    BinaryExpressionOperator.DIV => (double)left / (double)right,
+                    BinaryExpressionOperator.AND => (bool)left && (bool)right,
+                    BinaryExpressionOperator.OR => (bool)left || (bool)right,
+                    _ => throw new NotImplementedException("Unknown operator: " + bNode.Operator),
+                };
+            }
+
+            throw new Exception("Unknown value: " + node);
         }
 
         internal void EvalauateStatementsNode(StatementsNode node)

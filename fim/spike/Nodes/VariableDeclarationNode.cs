@@ -30,8 +30,13 @@ namespace fim.spike.Nodes
             if( node.Type == VarType.UNKNOWN ) { ast.ThrowSyntaxError(typeToken, "Expected variable type"); }
             ast.Next();
 
-            var valueTokens = ast.ConsumeUntilMatch(TokenType.PUNCTUATION, "Could not find PUNCTUATION");
+            List<Token> valueTokens;
+            if( Utilities.IsTypeArray(node.Type) )
+                valueTokens = ast.ConsumeUntilMatch((t) => t.Type == TokenType.PUNCTUATION && t.Value != ",", "Could not find PUNCTUATION");
+            else
+                valueTokens = ast.ConsumeUntilMatch(TokenType.PUNCTUATION, "Could not find PUNCTUATION");
             node.Value = Utilities.CreateValueNode(valueTokens, node.Type);
+
             Token endToken = ast.Consume(TokenType.PUNCTUATION, "Expected PUNCTUATION.");
 
             node.Start = startToken.Start;

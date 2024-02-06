@@ -60,6 +60,22 @@ namespace fim.spike
 
             return tokens;
         }
+        public List<Token> ConsumeUntilMatch(Func<Token, bool> predicate, string error)
+        {
+            List<Token> tokens = new();
+
+            while (true)
+            {
+                if (EndOfFile()) ThrowSyntaxError(Peek(), error);
+                if (predicate(Peek())) break;
+
+                tokens.Add(Peek());
+                Next();
+            }
+
+            return tokens;
+
+        }
         public static string JoinTokensAsString(List<Token> tokens)
         {
             StringBuilder sb = new();
