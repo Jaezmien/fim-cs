@@ -108,5 +108,16 @@ namespace fim
                 _ => null,
             };
         }
+        public static string? GetDefaultValueString(VarType type)
+        {
+            return type switch
+            {
+                VarType.BOOLEAN => "false",
+                VarType.CHAR => "'\0'",
+                VarType.STRING => "\"\"",
+                VarType.NUMBER => "0",
+                _ => null,
+            };
+        }
     }
 }

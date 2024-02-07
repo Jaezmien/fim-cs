@@ -143,16 +143,25 @@ namespace fim.celestia
                     if( variable.Type == VarType.BOOLEAN_ARRAY )
                     {
                         var value = (variable.Value as Dictionary<int, bool>)![Convert.ToInt32(index)];
+                        resultType = VarType.BOOLEAN;
                         return value;
                     }
                     if( variable.Type == VarType.NUMBER_ARRAY )
                     {
                         var value = (variable.Value as Dictionary<int, double>)![Convert.ToInt32(index)];
+                        resultType = VarType.NUMBER;
                         return value;
                     }
                     if( variable.Type == VarType.STRING_ARRAY )
                     {
                         var value = (variable.Value as Dictionary<int, string>)![Convert.ToInt32(index)];
+                        resultType = VarType.STRING;
+                        return value;
+                    }
+                    if( variable.Type == VarType.STRING )
+                    {
+                        var value = (variable.Value as string)![Convert.ToInt32(index) - 1];
+                        resultType = VarType.CHAR;
                         return value;
                     }
                 }

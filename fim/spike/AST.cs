@@ -123,7 +123,7 @@ namespace fim.spike
                         Start = 0,
                         Length = 0,
                         Type = (VarType)possibleNullType,
-                        Value = Utilities.GetDefaultValue((VarType)possibleNullType)!
+                        Value = Utilities.GetDefaultValueString((VarType)possibleNullType)!
                     };
 
                     return node;
