@@ -1,6 +1,5 @@
 ﻿using fim.spike;
 using fim.spike.Nodes;
-using System.ComponentModel.DataAnnotations;
 
 namespace fim.celestia
 {
@@ -165,6 +164,15 @@ namespace fim.celestia
                 var right = EvaluateValueNode(bNode.Right, out var rightType, local);
 
                 if (left == null || right == null) return null;
+
+                if( bNode.Operator == BinaryExpressionOperator.ADD )
+                {
+                    if( leftType == VarType.STRING || rightType == VarType.STRING ) {
+                        resultType = VarType.STRING;
+                        return (dynamic)left + (dynamic)right;
+                    }
+                }
+
                 if (leftType != rightType) throw new Exception("Type mismatch");
                 if (Utilities.IsTypeArray(leftType)) throw new Exception("Binary expression of an array");
                 if (bNode.Type == BinaryExpressionType.ARITHMETIC && leftType != VarType.NUMBER) throw new Exception("Expected type double in arithmetic expression.");
