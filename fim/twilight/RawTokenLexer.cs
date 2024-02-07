@@ -88,7 +88,7 @@ namespace fim.twilight
             RawToken pointToken = oldTokens.ElementAt(0);
             if( pointToken.Value != "." ) { return false;  }
 
-            RawToken decimalToken = oldTokens.ElementAt(2);
+            RawToken decimalToken = oldTokens.ElementAt(1);
             if(!Utilities.IsStringNumber(decimalToken.Value)) { return false; }
 
             dequeueAmount = 2;

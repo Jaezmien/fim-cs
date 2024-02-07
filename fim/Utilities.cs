@@ -8,10 +8,13 @@ namespace fim
     {
         public static bool IsStringNumber(string value)
         {
+            if (value.Length == 0) return false;
+
             foreach (char c in value)
             {
                 if (c < '0' || c > '9') return false;
             }
+
             return true;
         }
         public static bool IsIndentCharacter(char c) { return c == ' ' || c == '\t'; }
