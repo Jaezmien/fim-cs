@@ -67,6 +67,7 @@
         KEYWORD_OR,
         KEYWORD_AND,
         KEYWORD_CONSTANT,
+        KEYWORD_OF,
     }
 
     internal interface IPosition

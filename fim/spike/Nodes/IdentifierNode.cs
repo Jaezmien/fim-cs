@@ -4,4 +4,8 @@
     {
         public string Identifier = "";
     }
+    public class IndexIdentifierNode : IdentifierNode
+    {
+        public ValueNode? Index = null;
+    }
 }

@@ -31,5 +31,15 @@
             return true;
 
         }
+        internal static bool IsOfKeyword(Token currentToken, Queue<Token> oldTokens, out int dequeueAmount)
+        {
+            dequeueAmount = -1;
+
+            if( currentToken.Value != "of") { return false; }
+
+            dequeueAmount = 0;
+            return true;
+
+        }
     }
 }

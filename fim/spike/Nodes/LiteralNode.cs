@@ -65,17 +65,28 @@ namespace fim.spike.Nodes
             }
         }
         public VarType Type = VarType.UNKNOWN;
+    }
 
-        private static char CharAsLiteral(char input)
-		{
-			switch (input)
-			{
-				case '0': return '\0';
-				case 'r': return '\r';
-				case 'n': return '\n';
-				case 't': return '\t';
-			}
-			return input;
-		}
+    public class LiteralDictNode : ValueNode
+    {
+        public Dictionary<int, object> RawDict = new Dictionary<int, object>();
+
+        public object Value
+        {
+            get
+            {
+                if (Type == VarType.BOOLEAN_ARRAY) return RawDict.ToDictionary(i => i.Key, i => (bool)i.Value);
+                if (Type == VarType.NUMBER_ARRAY) return RawDict.ToDictionary(i => i.Key, i => (double)i.Value);
+                if (Type == VarType.STRING_ARRAY) return RawDict.ToDictionary(i => i.Key, i => (string)i.Value);
+
+                return RawDict;
+            }
+            set
+            {
+                RawDict = (value as IDictionary<int, object>).ToDictionary(i => (int)i.Key, i => (object)i.Value);
+            }
+        }
+
+        public VarType Type = VarType.UNKNOWN;
     }
 }

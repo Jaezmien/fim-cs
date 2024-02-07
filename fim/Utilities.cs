@@ -42,6 +42,17 @@ namespace fim
                 _ => false,
             };
         }
+        public static VarType GetArrayBaseType(VarType varType)
+        {
+
+            return varType switch
+            {
+                VarType.STRING_ARRAY => VarType.STRING,
+                VarType.BOOLEAN_ARRAY => VarType.BOOLEAN,
+                VarType.NUMBER_ARRAY => VarType.NUMBER,
+                _ => VarType.UNKNOWN,
+            };
+        }
 
         public static VarType ConvertTypeHint(TokenType tokenType)
         {
@@ -77,6 +88,9 @@ namespace fim
                 VarType.CHAR => '\0',
                 VarType.STRING => "",
                 VarType.NUMBER => 0,
+                VarType.BOOLEAN_ARRAY => new Dictionary<int, bool>(),
+                VarType.NUMBER_ARRAY => new Dictionary<int, double>(),
+                VarType.STRING_ARRAY => new Dictionary<int, string>(),
                 _ => null,
             };
         }

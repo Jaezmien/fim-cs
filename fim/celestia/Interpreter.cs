@@ -68,6 +68,12 @@ namespace fim.celestia
                 resultType = lNode.Type;
                 return lNode.Value;
             }
+            else if (Utilities.IsSameClass(node.GetType(), typeof(LiteralDictNode)))
+            {
+                var lNode = (LiteralDictNode)node;
+                resultType = lNode.Type;
+                return lNode.Value;
+            }
             else if (Utilities.IsSameClass(node.GetType(), typeof(IdentifierNode)))
             {
                 var iNode = (IdentifierNode)node;
@@ -76,6 +82,18 @@ namespace fim.celestia
                 {
                     resultType = variable.Type;
                     return variable.Value;
+                }
+            }
+            else if (Utilities.IsSameClass(node.GetType(), typeof(IndexIdentifierNode)))
+            {
+                var iNode = (IndexIdentifierNode)node;
+                var variable = Variables.Get(iNode.Identifier, local);
+                if (variable != null)
+                {
+                    var index = EvaluateValueNode(iNode.Index, out var indexType, local);
+                    if (indexType != VarType.NUMBER) throw new Exception("Expected " + VarType.NUMBER + ", got " + indexType);
+                    var value = (variable.Value as Dictionary<int, object>)![Convert.ToInt32(index)];
+                    return EvaluateValueNode((ValueNode)value, out resultType, true);
                 }
             }
             else if (Utilities.IsSameClass(node.GetType(), typeof(BinaryExpressionNode)))

@@ -108,15 +108,30 @@ namespace fim.spike
         {
             if( tokens.Count == 0 && possibleNullType != null)
             {
-                LiteralNode node = new()
+                if (Utilities.IsTypeArray((VarType)possibleNullType))
                 {
-                    Start = 0, 
-                    Length = 0,
-                    Type = (VarType)possibleNullType,
-                    Value = Utilities.GetDefaultValue((VarType)possibleNullType)!
-                };
+                    LiteralDictNode node = new()
+                    {
+                        Start = 0,
+                        Length = 0,
+                        Type = (VarType)possibleNullType,
+                    };
 
-                return node;
+                    return node;
+
+                }
+                else
+                {
+                    LiteralNode node = new()
+                    {
+                        Start = 0,
+                        Length = 0,
+                        Type = (VarType)possibleNullType,
+                        Value = Utilities.GetDefaultValue((VarType)possibleNullType)!
+                    };
+
+                    return node;
+                }
             }
             if( tokens.Count == 1 )
             {
@@ -167,59 +182,112 @@ namespace fim.spike
                     };
                 }
 
-                BinaryExpressionNode? node = null;
-                void CheckExpression(Func<bool> predicate, Func<int> index, BinaryExpressionOperator op, BinaryExpressionType type)
                 {
-                    if (node != null) return;
-                    if (!predicate()) return;
-                    var lastIndex = index();
-                    var leftNode = CreateValueNode(tokens.GetRange(0, lastIndex));
-                    var rightNode = CreateValueNode(tokens.GetRange(lastIndex + 1, tokens.Count - lastIndex - 1));
-
-                    node = new BinaryExpressionNode()
+                    BinaryExpressionNode? node = null;
+                    void CheckExpression(Func<bool> predicate, Func<int> index, BinaryExpressionOperator op, BinaryExpressionType type)
                     {
-                        Left = leftNode,
-                        Right = rightNode,
-                        Operator = op,
-                        Type = type,
-                        Start = leftNode.Start,
-                        Length = rightNode.Start + rightNode.Length - leftNode.Start,
+                        if (node != null) return;
+                        if (!predicate()) return;
+                        var lastIndex = index();
+                        var leftNode = CreateValueNode(tokens.GetRange(0, lastIndex));
+                        var rightNode = CreateValueNode(tokens.GetRange(lastIndex + 1, tokens.Count - lastIndex - 1));
+
+                        node = new BinaryExpressionNode()
+                        {
+                            Left = leftNode,
+                            Right = rightNode,
+                            Operator = op,
+                            Type = type,
+                            Start = leftNode.Start,
+                            Length = rightNode.Start + rightNode.Length - leftNode.Start,
+                        };
+                    }
+
+                    CheckExpression(
+                        () => tokens.FindIndex(t => t.Type == TokenType.KEYWORD_AND) != -1,
+                        () => tokens.FindLastIndex(t => t.Type == TokenType.KEYWORD_AND),
+                        BinaryExpressionOperator.AND, BinaryExpressionType.RELATIONAL
+                    );
+                    CheckExpression(
+                        () => tokens.FindIndex(t => t.Type == TokenType.KEYWORD_OR) != -1,
+                        () => tokens.FindLastIndex(t => t.Type == TokenType.KEYWORD_OR),
+                        BinaryExpressionOperator.OR, BinaryExpressionType.RELATIONAL
+                    );
+
+                    CheckExpression(
+                        () => tokens.FindIndex(t => t.Type == TokenType.OPERATOR_MUL_INFIX) != -1,
+                        () => tokens.FindLastIndex(t => t.Type == TokenType.OPERATOR_MUL_INFIX),
+                        BinaryExpressionOperator.MUL, BinaryExpressionType.ARITHMETIC
+                    );
+                    CheckExpression(
+                        () => tokens.FindIndex(t => t.Type == TokenType.OPERATOR_DIV_INFIX) != -1,
+                        () => tokens.FindLastIndex(t => t.Type == TokenType.OPERATOR_DIV_INFIX),
+                        BinaryExpressionOperator.DIV, BinaryExpressionType.ARITHMETIC
+                    );
+                    CheckExpression(
+                        () => tokens.FindIndex(t => t.Type == TokenType.OPERATOR_ADD_INFIX) != -1,
+                        () => tokens.FindLastIndex(t => t.Type == TokenType.OPERATOR_ADD_INFIX),
+                        BinaryExpressionOperator.ADD, BinaryExpressionType.ARITHMETIC
+                    );
+                    CheckExpression(
+                        () => tokens.FindIndex(t => t.Type == TokenType.OPERATOR_SUB_INFIX) != -1,
+                        () => tokens.FindLastIndex(t => t.Type == TokenType.OPERATOR_SUB_INFIX),
+                        BinaryExpressionOperator.SUB, BinaryExpressionType.ARITHMETIC
+                    );
+
+                    if (node != null) { return node; }
+                }
+
+                if( tokens.FindIndex(t => t.Type == TokenType.PUNCTUATION && t.Value == ",") != -1 )
+                {
+                    Dictionary<int, object> pairs = new();
+                    var baseType = Utilities.GetArrayBaseType((VarType)possibleNullType!);
+
+                    int currentIndex = 0;
+                    int currentPairIndex = 1;
+                    while(true)
+                    {
+                        int nextIndex = tokens.FindIndex(currentIndex, t => t.Type == TokenType.PUNCTUATION && t.Value == ",");
+                        var currentTokens = tokens.GetRange(currentIndex, (nextIndex == -1 ? tokens.Count : nextIndex) - currentIndex);
+
+                        pairs[currentPairIndex] = CreateValueNode(currentTokens, baseType);
+
+                        if (nextIndex == -1) break;
+                        currentIndex = nextIndex + 1;
+                        currentPairIndex += 1;
+                    }
+
+                    var firstToken = tokens.First();
+                    var lastToken = tokens.Last();
+
+                    return new LiteralDictNode()
+                    {
+                        Start = firstToken.Start,
+                        Length = lastToken.Start + lastToken.Length - firstToken.Start,
+                        RawDict = pairs,
+                        Type = baseType 
                     };
                 }
 
-                CheckExpression(
-                    () => tokens.FindIndex(t => t.Type == TokenType.KEYWORD_AND) != -1,
-                    () => tokens.FindLastIndex(t => t.Type == TokenType.KEYWORD_AND),
-                    BinaryExpressionOperator.AND, BinaryExpressionType.RELATIONAL
-                );
-                CheckExpression(
-                    () => tokens.FindIndex(t => t.Type == TokenType.KEYWORD_OR) != -1,
-                    () => tokens.FindLastIndex(t => t.Type == TokenType.KEYWORD_OR),
-                    BinaryExpressionOperator.OR, BinaryExpressionType.RELATIONAL
-                );
+                if( tokens.FindIndex(t => t.Type == TokenType.KEYWORD_OF) != -1 )
+                {
+                    var ofIndex = tokens.FindIndex(t => t.Type == TokenType.KEYWORD_OF);
+                    var indexTokens = tokens.GetRange(0, ofIndex);
+                    var identifierTokens = tokens.GetRange(ofIndex + 1, tokens.Count - ofIndex - 1);
+                    if (indexTokens.Count < 1) throw new Exception("Expected identifier");
+                    if (identifierTokens.Count != 1 || identifierTokens.First().Type != TokenType.LITERAL) throw new Exception("Expected identifier");
 
-                CheckExpression(
-                    () => tokens.FindIndex(t => t.Type == TokenType.OPERATOR_MUL_INFIX) != -1,
-                    () => tokens.FindLastIndex(t => t.Type == TokenType.OPERATOR_MUL_INFIX),
-                    BinaryExpressionOperator.MUL, BinaryExpressionType.ARITHMETIC
-                );
-                CheckExpression(
-                    () => tokens.FindIndex(t => t.Type == TokenType.OPERATOR_DIV_INFIX) != -1,
-                    () => tokens.FindLastIndex(t => t.Type == TokenType.OPERATOR_DIV_INFIX),
-                    BinaryExpressionOperator.DIV, BinaryExpressionType.ARITHMETIC
-                );
-                CheckExpression(
-                    () => tokens.FindIndex(t => t.Type == TokenType.OPERATOR_ADD_INFIX) != -1,
-                    () => tokens.FindLastIndex(t => t.Type == TokenType.OPERATOR_ADD_INFIX),
-                    BinaryExpressionOperator.ADD, BinaryExpressionType.ARITHMETIC
-                );
-                CheckExpression(
-                    () => tokens.FindIndex(t => t.Type == TokenType.OPERATOR_SUB_INFIX) != -1,
-                    () => tokens.FindLastIndex(t => t.Type == TokenType.OPERATOR_SUB_INFIX),
-                    BinaryExpressionOperator.SUB, BinaryExpressionType.ARITHMETIC
-                );
+                    var startToken = tokens.First();
+                    var endToken = tokens.Last();
 
-                if( node != null ) { return node;  }
+                    return new IndexIdentifierNode()
+                    {
+                        Start = startToken.Start,
+                        Length = endToken.Start + endToken.Length - startToken.Start,
+                        Identifier = identifierTokens.First().Value,
+                        Index = CreateValueNode(indexTokens),
+                    };
+                }
 
                 if( tokens.FirstOrDefault() != null && Utilities.ConvertTypeHint(tokens.First().Type) != VarType.UNKNOWN )
                 {
@@ -245,6 +313,7 @@ namespace fim.spike
 
                     return vNode;
                 }
+
 
                 throw new NotImplementedException();
             }

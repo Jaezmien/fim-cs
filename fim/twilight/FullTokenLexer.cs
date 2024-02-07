@@ -120,6 +120,7 @@
                 ProcessToken(currentToken, TokenParsers.IsConstantKeyword, TokenType.KEYWORD_CONSTANT);
                 ProcessToken(currentToken, TokenParsers.IsAndKeyword, TokenType.KEYWORD_AND);
                 ProcessToken(currentToken, TokenParsers.IsOrKeyword, TokenType.KEYWORD_OR);
+                ProcessToken(currentToken, TokenParsers.IsOfKeyword, TokenType.KEYWORD_OF);
 
                 newTokens.Enqueue(currentToken);
             }
