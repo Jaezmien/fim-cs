@@ -71,8 +71,56 @@ namespace fim.celestia
             else if (Utilities.IsSameClass(node.GetType(), typeof(LiteralDictNode)))
             {
                 var lNode = (LiteralDictNode)node;
-                resultType = lNode.Type;
-                return lNode.Value;
+                var nodeDict = lNode.Value as Dictionary<int, ValueNode>;
+                var expectedType = Utilities.GetArrayBaseType(lNode.Type);
+
+                if( lNode.Type == VarType.BOOLEAN_ARRAY )
+                {
+                    var dict = new Dictionary<int, bool>();
+                    if (nodeDict != null)
+                    {
+                        foreach (KeyValuePair<int, ValueNode> entry in nodeDict)
+                        {
+                            var entryValue = EvaluateValueNode(entry.Value, out var entryType, true);
+                            if (entryType != expectedType) throw new Exception("Expected " + expectedType + ", got " + entryType);
+                            dict[entry.Key] = (bool)entryValue;
+                        }
+                    }
+                    resultType = VarType.BOOLEAN_ARRAY;
+                    return dict;
+                }
+                if( lNode.Type == VarType.NUMBER_ARRAY )
+                {
+                    var dict = new Dictionary<int, double>();
+                    if (nodeDict != null)
+                    {
+                        foreach (KeyValuePair<int, ValueNode> entry in nodeDict)
+                        {
+                            var entryValue = EvaluateValueNode(entry.Value, out var entryType, true);
+                            if (entryType != expectedType) throw new Exception("Expected " + expectedType + ", got " + entryType);
+                            dict[entry.Key] = (double)entryValue;
+                        }
+                    }
+                    resultType = VarType.NUMBER_ARRAY;
+                    return dict;
+                }
+                if( lNode.Type == VarType.STRING_ARRAY )
+                {
+                    var dict = new Dictionary<int, string>();
+                    if (nodeDict != null)
+                    {
+                        foreach (KeyValuePair<int, ValueNode> entry in nodeDict)
+                        {
+                            var entryValue = EvaluateValueNode(entry.Value, out var entryType, true);
+                            if (entryType != expectedType) throw new Exception("Expected " + expectedType + ", got " + entryType);
+                            dict[entry.Key] = (string)entryValue;
+                        }
+                    }
+                    resultType = VarType.STRING_ARRAY;
+                    return dict;
+                }
+
+                throw new NotImplementedException("Unknown type " + lNode.Type);
             }
             else if (Utilities.IsSameClass(node.GetType(), typeof(IdentifierNode)))
             {
@@ -92,8 +140,22 @@ namespace fim.celestia
                 {
                     var index = EvaluateValueNode(iNode.Index, out var indexType, local);
                     if (indexType != VarType.NUMBER) throw new Exception("Expected " + VarType.NUMBER + ", got " + indexType);
-                    var value = (variable.Value as Dictionary<int, object>)![Convert.ToInt32(index)];
-                    return EvaluateValueNode((ValueNode)value, out resultType, true);
+
+                    if( variable.Type == VarType.BOOLEAN_ARRAY )
+                    {
+                        var value = (variable.Value as Dictionary<int, bool>)![Convert.ToInt32(index)];
+                        return value;
+                    }
+                    if( variable.Type == VarType.NUMBER_ARRAY )
+                    {
+                        var value = (variable.Value as Dictionary<int, double>)![Convert.ToInt32(index)];
+                        return value;
+                    }
+                    if( variable.Type == VarType.STRING_ARRAY )
+                    {
+                        var value = (variable.Value as Dictionary<int, string>)![Convert.ToInt32(index)];
+                        return value;
+                    }
                 }
             }
             else if (Utilities.IsSameClass(node.GetType(), typeof(BinaryExpressionNode)))
@@ -167,6 +229,23 @@ namespace fim.celestia
                     if( var.Type != valueType ) ThrowRuntimeError(vmNode, "Expected type " + var.Type + ", got " + valueType);
 
                     var.Value = value;
+                }
+                if( Utilities.IsSameClass(statement.GetType(), typeof(ArrayModifyNode)))
+                {
+                    var amNode = (ArrayModifyNode)statement;
+                    Variable? var = Variables.Get(amNode.Identifier!.Identifier, true);
+
+                    if( var == null ) ThrowRuntimeError(amNode, "Variable " + amNode.Identifier!.Identifier + " not found.");
+
+                    var indexValue = EvaluateValueNode(amNode.Identifier.Index, out var indexType, true);
+                    if (indexType != VarType.NUMBER) ThrowRuntimeError(amNode.Identifier!.Index!, "Expected type " + VarType.NUMBER + ", got " + indexType);
+
+                    var value = EvaluateValueNode(amNode.Value, out var valueType, true);
+                    if( valueType != Utilities.GetArrayBaseType(var.Type)) ThrowRuntimeError(amNode, "Expected type " + Utilities.GetArrayBaseType(var.Type) + ", got " + valueType);
+
+                    if( var.Type == VarType.BOOLEAN_ARRAY ) { (var.Value as Dictionary<int, bool>)![Convert.ToInt32(indexValue)] = Convert.ToBoolean(value); }
+                    if( var.Type == VarType.NUMBER_ARRAY ) { (var.Value as Dictionary<int, double>)![Convert.ToInt32(indexValue)] = Convert.ToDouble(value); }
+                    if( var.Type == VarType.STRING_ARRAY ) { (var.Value as Dictionary<int, string>)![Convert.ToInt32(indexValue)] = Convert.ToString(value); }
                 }
             }
         }

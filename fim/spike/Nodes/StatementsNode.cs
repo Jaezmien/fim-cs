@@ -35,6 +35,13 @@ namespace fim.spike.Nodes
                     node.Statements.Add(modifyNode);
                     continue;
                 }
+                if( ast.Contains(TokenType.KEYWORD_OF, expectedEndType, TokenType.END_OF_FILE, TokenType.NEWLINE) &&
+                    ast.Contains(TokenType.OPERATOR_EQ, expectedEndType, TokenType.END_OF_FILE, TokenType.NEWLINE) )
+                {
+                    var modifyNode = ArrayModifyNode.Parse(ast);
+                    node.Statements.Add(modifyNode);
+                    continue;
+                }
 
                 ast.Next();
             }

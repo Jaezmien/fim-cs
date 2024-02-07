@@ -28,6 +28,16 @@ namespace fim.spike
             var current = Peek();
             return tokenTypes.Any(t => t == current.Type);
         }
+        public bool Contains(TokenType tokenType, params TokenType[]? stopTokens)
+        {
+            for(int i = Current; i < Tokens.Length; i++)
+            {
+                if (stopTokens != null && stopTokens.Any(s => s == Tokens[i].Type)) break;
+                if (Tokens[i].Type == tokenType) return true;
+            }
+
+            return false;
+        }
         public bool EndOfFile() { return Peek().Type == TokenType.END_OF_FILE; }
         public Token Consume(TokenType type, string error)
         {
@@ -45,21 +55,7 @@ namespace fim.spike
             Next();
             return PeekPrevious();
         }
-        public List<Token> ConsumeUntilMatch(TokenType type, string error)
-        {
-            List<Token> tokens = new();
-
-            while (true)
-            {
-                if (EndOfFile()) ThrowSyntaxError(Peek(), error);
-                if (Peek().Type == type) break;
-
-                tokens.Add(Peek());
-                Next();
-            }
-
-            return tokens;
-        }
+        public List<Token> ConsumeUntilMatch(TokenType type, string error) => ConsumeUntilMatch(t => t.Type == type, error);
         public List<Token> ConsumeUntilMatch(Func<Token, bool> predicate, string error)
         {
             List<Token> tokens = new();
@@ -240,7 +236,7 @@ namespace fim.spike
 
                 if( tokens.FindIndex(t => t.Type == TokenType.PUNCTUATION && t.Value == ",") != -1 )
                 {
-                    Dictionary<int, object> pairs = new();
+                    Dictionary<int, ValueNode> pairs = new();
                     var baseType = Utilities.GetArrayBaseType((VarType)possibleNullType!);
 
                     int currentIndex = 0;
@@ -265,7 +261,7 @@ namespace fim.spike
                         Start = firstToken.Start,
                         Length = lastToken.Start + lastToken.Length - firstToken.Start,
                         RawDict = pairs,
-                        Type = baseType 
+                        Type = (VarType)possibleNullType!, 
                     };
                 }
 

@@ -53,6 +53,17 @@ namespace fim
                 _ => VarType.UNKNOWN,
             };
         }
+        public static VarType GetArrayType(VarType varType)
+        {
+
+            return varType switch
+            {
+                VarType.STRING => VarType.STRING_ARRAY,
+                VarType.BOOLEAN => VarType.BOOLEAN_ARRAY,
+                VarType.NUMBER => VarType.NUMBER_ARRAY,
+                _ => VarType.UNKNOWN,
+            };
+        }
 
         public static VarType ConvertTypeHint(TokenType tokenType)
         {
