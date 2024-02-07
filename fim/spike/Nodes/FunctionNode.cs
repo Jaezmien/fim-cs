@@ -6,7 +6,7 @@ namespace fim.spike.Nodes
     {
         public string Name = "";
         public bool IsMain = false;
-        public StatementsNode? Statements = null;
+        public StatementsNode? Body = null;
 
         public VarType? ReturnType = null;
         public Dictionary<string, VarType>? ParametersType = null;
@@ -45,7 +45,7 @@ namespace fim.spike.Nodes
 
             ast.Consume(TokenType.PUNCTUATION, "Expected PUNCTUATION");
 
-            node.Statements = StatementsNode.ParseStatements(ast, TokenType.FUNCTION_FOOTER);
+            node.Body = StatementsNode.ParseStatements(ast, TokenType.FUNCTION_FOOTER);
 
             ast.Consume(TokenType.FUNCTION_FOOTER, "Expected FUNCTION_FOOTER");
             string expectedName = ast.Consume(TokenType.LITERAL, "Expected LITERAL").Value;

@@ -21,9 +21,9 @@ namespace fim.celestia
         {
             _interpreter.Variables.PushFunctionStack();
 
-            if(_node.Statements != null)
+            if(_node.Body != null)
             {
-                _interpreter.EvalauateStatementsNode(_node.Statements);
+                _interpreter.EvalauateStatementsNode(_node.Body);
             }
 
             _interpreter.Variables.PopFunctionStack();
