@@ -223,7 +223,9 @@ namespace fim.celestia
                 }
             }
 
-            throw new Exception("Unknown value: " + node);
+            if (Utilities.IsSameClass(node.GetType(), typeof(IdentifierNode))) ThrowRuntimeError(node, "Unknown variable: " + ((IdentifierNode)node).Identifier);
+            else ThrowRuntimeError(node, "Unknown value: " + node);
+            throw new Exception();
         }
 
         internal void EvalauateStatementsNode(StatementsNode node)
