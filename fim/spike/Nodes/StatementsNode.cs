@@ -6,7 +6,7 @@ namespace fim.spike.Nodes
     {
         public List<Node> Statements = new();
 
-        public static StatementsNode ParseStatements(AST ast, TokenType expectedEndType)
+        public static StatementsNode ParseStatements(AST ast, params TokenType[] expectedEndType)
         {
             StatementsNode node = new();
 
@@ -35,8 +35,8 @@ namespace fim.spike.Nodes
                     node.Statements.Add(modifyNode);
                     continue;
                 }
-                if( ast.Contains(TokenType.KEYWORD_OF, expectedEndType, TokenType.END_OF_FILE, TokenType.NEWLINE) &&
-                    ast.Contains(TokenType.OPERATOR_EQ, expectedEndType, TokenType.END_OF_FILE, TokenType.NEWLINE) )
+                if( ast.Contains(TokenType.KEYWORD_OF, new TokenType[] { TokenType.END_OF_FILE, TokenType.NEWLINE }.Concat(expectedEndType).ToArray() ) &&
+                    ast.Contains(TokenType.OPERATOR_EQ, new TokenType[] { TokenType.END_OF_FILE, TokenType.NEWLINE }.Concat(expectedEndType).ToArray() ) )
                 {
                     var modifyNode = ArrayModifyNode.Parse(ast);
                     node.Statements.Add(modifyNode);
