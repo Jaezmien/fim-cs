@@ -184,8 +184,12 @@ namespace fim.celestia
 
                 if (leftType != rightType) throw new Exception("Type mismatch");
                 if (Utilities.IsTypeArray(leftType)) throw new Exception("Binary expression of an array");
+
                 if (bNode.Type == BinaryExpressionType.ARITHMETIC && leftType != VarType.NUMBER) throw new Exception("Expected type double in arithmetic expression.");
-                if (bNode.Type == BinaryExpressionType.RELATIONAL && leftType != VarType.BOOLEAN) throw new Exception("Expected type boolean in relational expression.");
+                if( bNode.Type == BinaryExpressionType.RELATIONAL )
+                {
+                    // TODO: Type checks
+                }
 
                 if (bNode.Type == BinaryExpressionType.ARITHMETIC) resultType = VarType.NUMBER;
                 if (bNode.Type == BinaryExpressionType.RELATIONAL) resultType = VarType.BOOLEAN;
@@ -198,6 +202,12 @@ namespace fim.celestia
                     BinaryExpressionOperator.DIV => (double)left / (double)right,
                     BinaryExpressionOperator.AND => (bool)left && (bool)right,
                     BinaryExpressionOperator.OR => (bool)left || (bool)right,
+                    BinaryExpressionOperator.GTE => (double)left >= (double)right,
+                    BinaryExpressionOperator.LTE => (double)left <= (double)right,
+                    BinaryExpressionOperator.GT => (double)left > (double)right,
+                    BinaryExpressionOperator.LT => (double)left < (double)right,
+                    BinaryExpressionOperator.NEQ => !left.Equals(right),
+                    BinaryExpressionOperator.EQ => left.Equals(right),
                     _ => throw new NotImplementedException("Unknown operator: " + bNode.Operator),
                 };
             }
