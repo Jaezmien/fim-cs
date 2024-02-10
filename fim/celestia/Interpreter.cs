@@ -230,6 +230,8 @@ namespace fim.celestia
 
         internal void EvalauateStatementsNode(StatementsNode node)
         {
+            uint createdVariables = 0;
+
             foreach (var statement in node.Statements)
             {
                 if (Utilities.IsSameClass(statement.GetType(), typeof(PrintNode)))
@@ -244,6 +246,7 @@ namespace fim.celestia
                     var vdNode = (VariableDeclarationNode)statement;
                     Variable var = new(vdNode.Identifier, EvaluateValueNode(vdNode.Value, out _, true), vdNode.Type, vdNode.isConstant);
                     Variables.Push(var, false);
+                    createdVariables++;
                 }
                 if( Utilities.IsSameClass(statement.GetType(), typeof(VariableModifyNode)))
                 {
@@ -277,6 +280,8 @@ namespace fim.celestia
                     if( var.Type == VarType.STRING_ARRAY ) { (var.Value as Dictionary<int, string>)![Convert.ToInt32(indexValue)] = Convert.ToString(value); }
                 }
             }
+
+            Variables.Pop(false, createdVariables);
         }
 
         public void ThrowRuntimeError(int index, string error)
