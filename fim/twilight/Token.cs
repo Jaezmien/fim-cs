@@ -68,6 +68,11 @@
         KEYWORD_AND,
         KEYWORD_CONSTANT,
         KEYWORD_OF,
+        KEYWORD_THEN,
+
+        IF_CLAUSE,
+        ELSE_CLAUSE,
+        IF_END_CLAUSE,
     }
 
     internal interface IPosition

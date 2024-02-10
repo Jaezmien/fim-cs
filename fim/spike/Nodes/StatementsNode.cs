@@ -42,6 +42,12 @@ namespace fim.spike.Nodes
                     node.Statements.Add(modifyNode);
                     continue;
                 }
+                if( ast.Peek().Type == TokenType.IF_CLAUSE )
+                {
+                    var ifNode = IfStatementNode.Parse(ast);
+                    node.Statements.Add(ifNode);
+                    continue;
+                }
 
                 ast.Next();
             }

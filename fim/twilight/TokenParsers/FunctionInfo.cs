@@ -11,7 +11,6 @@
 
             dequeueAmount = 0;
             return true;
-
         }
         internal static bool IsFunctionHeader(Token currentToken, Queue<Token> oldTokens, out int dequeueAmount)
         {

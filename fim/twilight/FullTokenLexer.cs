@@ -97,6 +97,10 @@
 
                 ProcessToken(currentToken, TokenParsers.IsPostScriptSequence, TokenType.COMMENT_POSTSCRIPT);
 
+                ProcessToken(currentToken, TokenParsers.IsIfKeyword, TokenType.IF_CLAUSE);
+                ProcessToken(currentToken, TokenParsers.IsElseKeyword, TokenType.ELSE_CLAUSE);
+                ProcessToken(currentToken, TokenParsers.IsIfEndKeyword, TokenType.IF_END_CLAUSE);
+
                 ProcessToken(currentToken, TokenParsers.IsInfixAddition, TokenType.OPERATOR_ADD_INFIX);
                 ProcessToken(currentToken, TokenParsers.IsPrefixAddition, TokenType.OPERATOR_ADD_PREFIX);
                 ProcessToken(currentToken, TokenParsers.IsInfixSubtraction, TokenType.OPERATOR_SUB_INFIX);
@@ -118,6 +122,7 @@
                 ProcessToken(currentToken, TokenParsers.IsUnaryNot, TokenType.UNARY_NOT);
 
                 ProcessToken(currentToken, TokenParsers.IsConstantKeyword, TokenType.KEYWORD_CONSTANT);
+                ProcessToken(currentToken, TokenParsers.IsThenKeyword, TokenType.KEYWORD_THEN);
                 ProcessToken(currentToken, TokenParsers.IsAndKeyword, TokenType.KEYWORD_AND);
                 ProcessToken(currentToken, TokenParsers.IsOrKeyword, TokenType.KEYWORD_OR);
                 ProcessToken(currentToken, TokenParsers.IsOfKeyword, TokenType.KEYWORD_OF);

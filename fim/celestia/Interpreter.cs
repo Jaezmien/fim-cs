@@ -279,6 +279,26 @@ namespace fim.celestia
                     if( var.Type == VarType.NUMBER_ARRAY ) { (var.Value as Dictionary<int, double>)![Convert.ToInt32(indexValue)] = Convert.ToDouble(value); }
                     if( var.Type == VarType.STRING_ARRAY ) { (var.Value as Dictionary<int, string>)![Convert.ToInt32(indexValue)] = Convert.ToString(value); }
                 }
+                if( Utilities.IsSameClass(statement.GetType(), typeof(IfStatementNode)))
+                {
+                    IfStatementNode? ifNode = (IfStatementNode)statement;
+
+                    while (ifNode != null)
+                    {
+                        var ifResult = EvaluateValueNode(ifNode.ifStatement!.Condition, out var ifResultType, true);
+                        if (ifResultType != VarType.BOOLEAN) ThrowRuntimeError(ifNode.ifStatement!.Condition, "Expected type " + VarType.BOOLEAN + ", got " + ifResultType);
+
+                        if ((bool)ifResult! == true)
+                        {
+                            EvalauateStatementsNode(ifNode.ifStatement!.Body!);
+                            break;
+                        }
+                        else
+                        {
+                            ifNode = ifNode.elseStatement;
+                        }
+                    }
+                }
             }
 
             Variables.Pop(false, createdVariables);
