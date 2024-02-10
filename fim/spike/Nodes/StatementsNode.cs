@@ -52,7 +52,7 @@ namespace fim.spike.Nodes
                 var endNode = node.Statements.Last()!;
 
                 node.Start = startNode.Start;
-                node.Length = endNode.Start + endNode.Length - startNode.Length;
+                node.Length = endNode.Start + endNode.Length - startNode.Start;
             }
 
             return node;
