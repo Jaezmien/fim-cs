@@ -26,5 +26,11 @@
 
         AND,
         OR,
+        GTE,
+        LTE,
+        GT,
+        LT,
+        NEQ,
+        EQ
     }
 }

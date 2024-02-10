@@ -231,6 +231,37 @@ namespace fim.spike
                         BinaryExpressionOperator.SUB, BinaryExpressionType.ARITHMETIC
                     );
 
+                    CheckExpression(
+                        () => tokens.FindIndex(t => t.Type == TokenType.OPERATOR_GTE) != -1,
+                        () => tokens.FindLastIndex(t => t.Type == TokenType.OPERATOR_GTE),
+                        BinaryExpressionOperator.GTE, BinaryExpressionType.RELATIONAL
+                    );
+                    CheckExpression(
+                        () => tokens.FindIndex(t => t.Type == TokenType.OPERATOR_LTE) != -1,
+                        () => tokens.FindLastIndex(t => t.Type == TokenType.OPERATOR_LTE),
+                        BinaryExpressionOperator.LTE, BinaryExpressionType.RELATIONAL
+                    );
+                    CheckExpression(
+                        () => tokens.FindIndex(t => t.Type == TokenType.OPERATOR_GT) != -1,
+                        () => tokens.FindLastIndex(t => t.Type == TokenType.OPERATOR_GT),
+                        BinaryExpressionOperator.GT, BinaryExpressionType.RELATIONAL
+                    );
+                    CheckExpression(
+                        () => tokens.FindIndex(t => t.Type == TokenType.OPERATOR_LT) != -1,
+                        () => tokens.FindLastIndex(t => t.Type == TokenType.OPERATOR_LT),
+                        BinaryExpressionOperator.LT, BinaryExpressionType.RELATIONAL
+                    );
+                    CheckExpression(
+                        () => tokens.FindIndex(t => t.Type == TokenType.OPERATOR_NEQ) != -1,
+                        () => tokens.FindLastIndex(t => t.Type == TokenType.OPERATOR_NEQ),
+                        BinaryExpressionOperator.NEQ, BinaryExpressionType.RELATIONAL
+                    );
+                    CheckExpression(
+                        () => tokens.FindIndex(t => t.Type == TokenType.OPERATOR_EQ) != -1,
+                        () => tokens.FindLastIndex(t => t.Type == TokenType.OPERATOR_EQ),
+                        BinaryExpressionOperator.EQ, BinaryExpressionType.RELATIONAL
+                    );
+
                     if (node != null) { return node; }
                 }
 
