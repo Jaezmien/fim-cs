@@ -200,17 +200,6 @@ namespace fim.spike
                     }
 
                     CheckExpression(
-                        () => tokens.FindIndex(t => t.Type == TokenType.KEYWORD_AND) != -1,
-                        () => tokens.FindLastIndex(t => t.Type == TokenType.KEYWORD_AND),
-                        BinaryExpressionOperator.AND, BinaryExpressionType.RELATIONAL
-                    );
-                    CheckExpression(
-                        () => tokens.FindIndex(t => t.Type == TokenType.KEYWORD_OR) != -1,
-                        () => tokens.FindLastIndex(t => t.Type == TokenType.KEYWORD_OR),
-                        BinaryExpressionOperator.OR, BinaryExpressionType.RELATIONAL
-                    );
-
-                    CheckExpression(
                         () => tokens.FindIndex(t => t.Type == TokenType.OPERATOR_MUL_INFIX) != -1,
                         () => tokens.FindLastIndex(t => t.Type == TokenType.OPERATOR_MUL_INFIX),
                         BinaryExpressionOperator.MUL, BinaryExpressionType.ARITHMETIC
@@ -260,6 +249,17 @@ namespace fim.spike
                         () => tokens.FindIndex(t => t.Type == TokenType.OPERATOR_EQ) != -1,
                         () => tokens.FindLastIndex(t => t.Type == TokenType.OPERATOR_EQ),
                         BinaryExpressionOperator.EQ, BinaryExpressionType.RELATIONAL
+                    );
+
+                    CheckExpression(
+                        () => tokens.FindIndex(t => t.Type == TokenType.KEYWORD_AND) != -1,
+                        () => tokens.FindLastIndex(t => t.Type == TokenType.KEYWORD_AND),
+                        BinaryExpressionOperator.AND, BinaryExpressionType.RELATIONAL
+                    );
+                    CheckExpression(
+                        () => tokens.FindIndex(t => t.Type == TokenType.KEYWORD_OR) != -1,
+                        () => tokens.FindLastIndex(t => t.Type == TokenType.KEYWORD_OR),
+                        BinaryExpressionOperator.OR, BinaryExpressionType.RELATIONAL
                     );
 
                     if (node != null) { return node; }
