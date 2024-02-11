@@ -23,7 +23,7 @@
         FUNCTION_PARAMETER,
 
         PRINT,
-        PRINT_NEWLINE,
+        PRINT_INLINE,
         PROMPT,
 
         VARIABLE_DECLARATION,

@@ -23,7 +23,7 @@ namespace fim.spike.Nodes
                     node.Statements.Add(variableNode);
                     continue;
                 }
-                if( ast.Peek().Type == TokenType.PRINT || ast.Peek().Type == TokenType.PRINT_NEWLINE )
+                if( ast.Peek().Type == TokenType.PRINT || ast.Peek().Type == TokenType.PRINT_INLINE )
                 {
                     var printNode = PrintNode.Parse(ast);
                     node.Statements.Add(printNode);

@@ -12,11 +12,11 @@ namespace fim.spike.Nodes
             PrintNode node = new();
 
             Token startToken = ast.Peek();
-            if( startToken.Type != TokenType.PRINT && startToken.Type != TokenType.PRINT_NEWLINE )
+            if( startToken.Type != TokenType.PRINT && startToken.Type != TokenType.PRINT_INLINE )
             {
-                ast.ThrowSyntaxError(startToken, "Expected PRINT or PRINT_NEWLINE");
+                ast.ThrowSyntaxError(startToken, "Expected PRINT or PRINT_INLINE");
             }
-            node.NewLine = startToken.Type == TokenType.PRINT_NEWLINE;
+            node.NewLine = startToken.Type != TokenType.PRINT_INLINE;
             ast.Next();
 
             var valueTokens = ast.ConsumeUntilMatch(TokenType.PUNCTUATION, "Could not find PUNCTUATION");
