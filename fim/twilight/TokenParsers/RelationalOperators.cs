@@ -152,6 +152,21 @@
         {
             dequeueAmount = -1;
 
+            string[][] MULTI_TOKENS =
+            {
+                new string[] {"is", " ", "equal", " ", "to" },
+                new string[] {"was", " ", "equal", " ", "to" },
+                new string[] {"were", " ", "equal", " ", "to" },
+            };
+            foreach (string[] MULTI_TOKEN in MULTI_TOKENS)
+            {
+                if (FullTokenLexer.CheckTokenSequence(currentToken, oldTokens, MULTI_TOKEN))
+                {
+                    dequeueAmount = MULTI_TOKEN.Length - 1;
+                    return true;
+                }
+            }
+
             string[] SINGLE_TOKENS = { "is", "was", "were", "had", "has", "has", "likes", "like" };
             if (Array.IndexOf(SINGLE_TOKENS, currentToken.Value) != -1)
             {
@@ -159,14 +174,7 @@
                 return true;
             }
 
-            string[] MULTI_TOKEN_PREFIX = { "is", "was", "were" };
-            if (Array.IndexOf(MULTI_TOKEN_PREFIX, currentToken.Value) == -1) { return false; }
-
-            string[] EXPECTED_TOKENS = { " ", "equal", "to" };
-            if (!FullTokenLexer.CheckTokenSequence(oldTokens, EXPECTED_TOKENS)) return false;
-
-            dequeueAmount = EXPECTED_TOKENS.Length - 1;
-            return true;
+            return false;
         }
     }
 }
