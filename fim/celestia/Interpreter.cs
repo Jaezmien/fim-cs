@@ -176,9 +176,14 @@ namespace fim.celestia
 
                 if( bNode.Operator == BinaryExpressionOperator.ADD )
                 {
-                    if( leftType == VarType.STRING || rightType == VarType.STRING ) {
+                    if( leftType == VarType.STRING ) {
                         resultType = VarType.STRING;
-                        return (dynamic)left + (dynamic)right;
+                        return (string)left + right;
+                    }
+                    else if( rightType == VarType.STRING )
+                    {
+                        resultType = VarType.STRING;
+                        return left + (string)right;
                     }
                 }
 
