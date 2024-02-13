@@ -10,8 +10,8 @@ namespace fim.test
         static void Main(string[] args)
         {
             string CURRENT_DIRECTORY = AppDomain.CurrentDomain.BaseDirectory;
-            string FILE = "conditional.fim";
-            string PATH = Path.GetFullPath(Path.Combine(CURRENT_DIRECTORY, @"..\..\..\Reports", FILE));
+            string FILE = "unary.fim";
+            string PATH = Path.GetFullPath(Path.Combine(CURRENT_DIRECTORY, @"..\..\..\Tests", FILE));
 
             string letter = File.ReadAllText(PATH);
             var tokens = Lexer.Parse(letter);
@@ -20,7 +20,6 @@ namespace fim.test
 
             var report = Report.Parse(new AST(tokens, letter));
             var i = new Interpreter(report, letter);
-
 
             Console.WriteLine(new string('-', Console.BufferWidth));
 
