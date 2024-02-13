@@ -14,7 +14,19 @@
 
 </div>
 
+# 📝 Notes
+
+-   fim is just a personal hobby project, seeing as FiM++ has never been updated for quite some time now.
+
+-   The syntax used here will follow a modified `Sparkle 1.0` syntax, unlike what [fimpp](https://github.com/KarolS/fimpp) uses. Please refer to the sample reports to see the differences.
+
 # 🖥 Usage
+## CLI
+
+```sh
+$ ./fim Reports/hello.fim
+Hello World!
+```
 
 ## As a library 
 
@@ -35,14 +47,7 @@ Interpreter i = Letter.WriteLetter(
 interpreter.MainParagraph?.Execute(); // Outputs "Hello World!" into the console.
 ```
 
-## CLI
-
-```sh
-$ ./fim Reports/hello.fim
-Hello World!
-```
-
-See the [reports folder](./fim.test/Reports/) for sample reports you can run on FiMSharp.
+See the [reports folder](./fim.cli/Reports/), or the [tests folder](./fim.test/Tests/) for sample reports you can run on fim.
 
 # 📚 External Resources
 
@@ -53,11 +58,3 @@ See the [reports folder](./fim.test/Reports/) for sample reports you can run on 
 -   [Language Specification](https://docs.google.com/document/d/1gU-ZROmZu0Xitw_pfC1ktCDvJH5rM85TxxQf5pg_xmg/edit#)
 
 -   [FiM++ Fandom](https://fimpp.fandom.com)
-
--   [Online Interpretator using Blazor](https://fimsharp.netlify.app)
-
-# 📝 Notes
-
--   fim is just a personal hobby project, seeing as FiM++ has never been updated for quite some time now.
-
--   The syntax used here will follow a modified `Sparkle 1.0` syntax, unlike what [fimpp](https://github.com/KarolS/fimpp) uses. Please refer to the sample reports to see the differences.

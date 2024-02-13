@@ -8,19 +8,19 @@ Today I learned how to make arrays!
     Did you know that carrot is the number 4? (Pointer - 4)
 
     Did you know that cake has many words?
-    cake 1 is the word "Mango Cake". (Index 1)
-    cake 2 is "Strawberry Cake". (Index 2)
-    cake 3 is banana. (Index 3)
-    carrot of cake is "Carrot Cake". (Index 4)
+    1 of cake is the word "Mango Cake". (Index 1)
+    2 of cake is "Strawberry Cake". (Index 2)
+    3 of cake is banana. (Index 3)
+    cake of carrot is "Carrot Cake". (Index 4)
 
     carrot got one less.
 
     I said carrot of cake. (Index 3)
 
     (With initialized values)
-    Did you know that Apples has the words "Gala" and "Red Delicious" and "Mcintosh" and "Honeycrisp"?
+    Did you know that Apples has the words "Gala", "Red Delicious", "Mcintosh", "Honeycrisp"?
 
-    I said Apples 1.
+    I said 1 of Apples.
 
 That's all about how to make arrays.
 
