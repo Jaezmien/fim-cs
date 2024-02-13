@@ -1,5 +1,6 @@
 ﻿using fim.spike;
 using fim.spike.Nodes;
+using System.ComponentModel.DataAnnotations;
 
 namespace fim.celestia
 {
@@ -246,6 +247,7 @@ namespace fim.celestia
                     Console.Write(value);
                     if (pNode.NewLine) { Console.Write("\n"); }
                 }
+
                 if( Utilities.IsSameClass(statement.GetType(), typeof(VariableDeclarationNode)))
                 {
                     var vdNode = (VariableDeclarationNode)statement;
@@ -253,6 +255,7 @@ namespace fim.celestia
                     Variables.Push(var, false);
                     createdVariables++;
                 }
+
                 if( Utilities.IsSameClass(statement.GetType(), typeof(VariableModifyNode)))
                 {
                     var vmNode = (VariableModifyNode)statement;
@@ -284,6 +287,40 @@ namespace fim.celestia
                     if( var.Type == VarType.NUMBER_ARRAY ) { (var.Value as Dictionary<int, double>)![Convert.ToInt32(indexValue)] = Convert.ToDouble(value); }
                     if( var.Type == VarType.STRING_ARRAY ) { (var.Value as Dictionary<int, string>)![Convert.ToInt32(indexValue)] = Convert.ToString(value); }
                 }
+                if( Utilities.IsSameClass(statement.GetType(), typeof(PostfixUnaryNode)))
+                {
+                    var puNode = (PostfixUnaryNode)statement;
+                    Variable? var = null;
+
+                    if( Utilities.IsSameClass(puNode.Identifier!.GetType(), typeof(IdentifierNode)))
+                    {
+                        var iNode = (IdentifierNode)puNode.Identifier;
+                        var = Variables.Get(iNode.Identifier, true)!;
+
+                        if (var.Type != VarType.NUMBER) ThrowRuntimeError(iNode, "Expected type " + VarType.NUMBER + ", got " + var.Type);
+
+                        var.Value = (double)var.Value! + (puNode.Type == PostfixUnaryNodeType.INCREMENT ? 1 : -1);
+                    }
+                    else if( Utilities.IsSameClass(puNode.Identifier!.GetType(), typeof(IndexIdentifierNode))) {
+                        var iNode = (IndexIdentifierNode)puNode.Identifier;
+                        var = Variables.Get(iNode.Identifier, true)!;
+
+                        if (var.Type != VarType.NUMBER_ARRAY) ThrowRuntimeError(iNode, "Expected type " + VarType.NUMBER_ARRAY + ", got " + var.Type);
+
+                        var indexValue = EvaluateValueNode(iNode.Index, out var indexType, true);
+                        if (indexType != VarType.NUMBER) ThrowRuntimeError(iNode.Index!, "Expected type " + VarType.NUMBER + ", got " + indexType);
+
+                        var dict = var.Value as Dictionary<int, double>;
+                        var intIndex = Convert.ToInt32(indexValue);
+
+                        dict[intIndex] = dict[intIndex] + (puNode.Type == PostfixUnaryNodeType.INCREMENT ? 1 : -1);
+                    }
+                    else
+                    {
+                        ThrowRuntimeError(puNode, "Unknown variable: " + puNode.Identifier);
+                    }
+                }
+
                 if( Utilities.IsSameClass(statement.GetType(), typeof(IfStatementNode)))
                 {
                     IfStatementNode? ifNode = (IfStatementNode)statement;

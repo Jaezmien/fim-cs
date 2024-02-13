@@ -35,6 +35,18 @@ namespace fim.spike.Nodes
                     node.Statements.Add(modifyNode);
                     continue;
                 }
+                if( ast.Contains(TokenType.UNARY_INCREMENT, new TokenType[] { TokenType.END_OF_FILE, TokenType.PUNCTUATION }.Concat(expectedEndType).ToArray() ) )
+                {
+                    var unaryNode = PostfixUnaryNode.Parse(ast, true);
+                    node.Statements.Add(unaryNode);
+                    continue;
+                }
+                if( ast.Contains(TokenType.UNARY_DECREMENT, new TokenType[] { TokenType.END_OF_FILE, TokenType.PUNCTUATION }.Concat(expectedEndType).ToArray() ) )
+                {
+                    var unaryNode = PostfixUnaryNode.Parse(ast, false);
+                    node.Statements.Add(unaryNode);
+                    continue;
+                }
                 if( ast.Contains(TokenType.KEYWORD_OF, new TokenType[] { TokenType.END_OF_FILE, TokenType.NEWLINE }.Concat(expectedEndType).ToArray() ) &&
                     ast.Contains(TokenType.OPERATOR_EQ, new TokenType[] { TokenType.END_OF_FILE, TokenType.NEWLINE }.Concat(expectedEndType).ToArray() ) )
                 {
