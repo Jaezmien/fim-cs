@@ -11,16 +11,16 @@ Today I learned how to make arrays!
     1 of cake is the word "Mango Cake". (Index 1)
     2 of cake is "Strawberry Cake". (Index 2)
     3 of cake is banana. (Index 3)
-    cake of carrot is "Carrot Cake". (Index 4)
+    carrot of cake is "Carrot Cake". (Index 4)
 
     carrot got one less.
 
-    I said carrot of cake. (Index 3)
+    I said carrot of cake. (Banana Cake)
 
     (With initialized values)
     Did you know that Apples has the words "Gala", "Red Delicious", "Mcintosh", "Honeycrisp"?
 
-    I said 1 of Apples.
+    I said 1 of Apples. (Gala)
 
 That's all about how to make arrays.
 
