@@ -10,35 +10,7 @@ namespace fim.spike.Nodes
             get
             {
                 if( Type == VarType.STRING ) {
-                    StringBuilder sb = new StringBuilder();
-
-                    for(int i = 1; i < RawValue.Length - 1; i++)
-                    {
-                        if(RawValue[i] != '\\' || i + 1 < RawValue.Length - 1)
-                        {
-                            sb.Append(RawValue[i]);
-                            continue;
-                        }
-
-                        char nextChar = RawValue[i + 1];
-                        switch( nextChar )
-                        {
-                            case '0': sb.Append('\0'); break;
-                            case 'r': sb.Append('\r'); break;
-                            case 'n': sb.Append('\n'); break;
-                            case 't': sb.Append('\t'); break;
-                            case '"': sb.Append('"'); break;
-                            default:
-                                {
-                                    sb.Append(RawValue[i]);
-                                    sb.Append(nextChar);
-                                }
-                                break;
-                        }
-                        i++;
-                    }
-
-                    return sb.ToString();
+                    return Utilities.UnsanitizeString(RawValue, true);
                 }
                 if( Type == VarType.CHAR ) {
                     string expectedChar = RawValue[1..^1];

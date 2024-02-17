@@ -1,6 +1,6 @@
 ﻿using fim.spike;
-using fim.spike.Nodes;
 using fim.twilight;
+using System.Text;
 
 namespace fim 
 {
@@ -118,6 +118,47 @@ namespace fim
                 VarType.NUMBER => "0",
                 _ => null,
             };
+        }
+
+        public static string UnsanitizeString(string value, bool trim = false)
+        {
+            StringBuilder sb = new();
+
+            int start = 0;
+            int length = value.Length;
+            if( trim )
+            {
+                start += 1;
+                length -= 1;
+            }
+
+            for (int i = start; i < length; i++)
+            {
+                if (value[i] != '\\' || i + 1 >= length)
+                {
+                    sb.Append(value[i]);
+                    continue;
+                }
+
+                char nextChar = value[i + 1];
+                switch (nextChar)
+                {
+                    case '0': sb.Append('\0'); break;
+                    case 'r': sb.Append('\r'); break;
+                    case 'n': sb.Append('\n'); break;
+                    case 't': sb.Append('\t'); break;
+                    case '"': sb.Append('"'); break;
+                    default:
+                        {
+                            sb.Append(value[i]);
+                            sb.Append(nextChar);
+                        }
+                        break;
+                }
+                i++;
+            }
+
+            return sb.ToString();
         }
     }
 }

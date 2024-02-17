@@ -244,7 +244,7 @@ namespace fim.celestia
                 {
                     var pNode = (PrintNode)statement;
                     var value = EvaluateValueNode(pNode.Value, out _, true);
-                    Console.Write(value);
+                    Console.Write(Utilities.UnsanitizeString(value.ToString()));
                     if (pNode.NewLine) { Console.Write("\n"); }
                 }
 
