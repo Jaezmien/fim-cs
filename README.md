@@ -47,7 +47,7 @@ Interpreter i = Letter.WriteLetter(
 interpreter.MainParagraph?.Execute(); // Outputs "Hello World!" into the console.
 ```
 
-See the [reports folder](./fim.cli/Reports/), or the [tests folder](./fim.test/Tests/) for sample reports you can run on fim.
+See the [reports folder](./fim.cli/Reports/), or the [tests sample](./fim.tests/Samples.cs) for sample reports you can run on fim.
 
 # 📚 External Resources
 
