@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fim.cli", "fim.cli\fim.cli.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fim.test", "fim.test\fim.test.csproj", "{3862D4E7-EB2E-46FB-92CF-940C53092F74}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fim.tests", "fim.tests\fim.tests.csproj", "{122E68CD-DE06-4B8A-8EFE-EF1F5EDF88DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{3862D4E7-EB2E-46FB-92CF-940C53092F74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3862D4E7-EB2E-46FB-92CF-940C53092F74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3862D4E7-EB2E-46FB-92CF-940C53092F74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{122E68CD-DE06-4B8A-8EFE-EF1F5EDF88DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{122E68CD-DE06-4B8A-8EFE-EF1F5EDF88DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{122E68CD-DE06-4B8A-8EFE-EF1F5EDF88DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{122E68CD-DE06-4B8A-8EFE-EF1F5EDF88DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

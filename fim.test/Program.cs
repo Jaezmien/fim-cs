@@ -10,8 +10,7 @@ namespace fim.test
         static void Main(string[] args)
         {
             string CURRENT_DIRECTORY = AppDomain.CurrentDomain.BaseDirectory;
-            string FILE = "unary.fim";
-            string PATH = Path.GetFullPath(Path.Combine(CURRENT_DIRECTORY, @"..\..\..\Tests", FILE));
+            string PATH = Path.GetFullPath(Path.Combine(CURRENT_DIRECTORY, @"..\..\..\Report.fim"));
 
             string letter = File.ReadAllText(PATH);
             var tokens = Lexer.Parse(letter);
