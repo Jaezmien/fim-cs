@@ -370,5 +370,53 @@ namespace fim.tests
             i.MainParagraph!.Execute();
             Assert.AreEqual(string.Join("", new string[] { "1", "2", "3", "4", "5" }.Select(b => b.ToString() + "\n")), sw.ToString());
         }
+
+        [Ignore]
+        [TestMethod]
+        public void Switch()
+        {
+            string letter = """
+                Dear Princess Celestia: Switches!
+
+                Today I learned how to do switch cases!
+                    Did you know that Pinkie's Tail is the number 1?
+                    
+                    As long as Pinkie's Tail is no greater than 5...
+                        In regards to Pinkie's Tail...
+                            On the 1st hoof...
+                                I said "That's impossible!".
+                            On the 2nd hoof...
+                                I said "There must be a scientific explanation.".
+                            On the 3rd hoof...
+                                I said "There must be an explanation.".
+                            On the 4th hoof...
+                                I said "Why does this happen?!".
+                            If all else fails...
+                                I said "She's just being Pinkie Pie.".
+                        That's what I did.
+
+                        Pinkie's Tail got one more!
+                    That's what I did.
+                That's all about how to do switch cases.
+
+                Your faithful student, Twilight Sparkle.
+                """;
+            var tokens = Lexer.Parse(letter);
+
+            var report = spike.Nodes.Report.Parse(new AST(tokens, letter));
+            var i = new Interpreter(report, letter);
+
+            using StringWriter sw = new();
+            Console.SetOut(sw);
+
+            i.MainParagraph!.Execute();
+            Assert.AreEqual(string.Join("", new string[] {
+                "That's impossible!",
+                "There must be a scientific explanation.",
+                "There must be an explanation",
+                "Why does this happen?!",
+                "She's just being Pinkie Pie."
+            }.Select(b => b.ToString() + "\n")), sw.ToString());
+        }
     }
 }
