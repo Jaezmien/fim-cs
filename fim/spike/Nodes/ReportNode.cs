@@ -14,7 +14,11 @@ namespace fim.spike.Nodes
             Report report = new();
 
             Token startToken = ast.Consume(TokenType.REPORT_HEADER, "Expected REPORT_HEADER");
-            report.Name = ast.Consume(TokenType.LITERAL, "Expected LITERAL").Value;
+            var nameTokens = ast.ConsumeUntilMatch(TokenType.PUNCTUATION, "Could not find PUNCTUATION");
+            var firstNameToken = nameTokens.First();
+            var lastNameToken = nameTokens.Last();
+            report.Name = ast.GetReportText(firstNameToken.Start, lastNameToken.Start + lastNameToken.Length - firstNameToken.Start);
+
             ast.Consume(TokenType.PUNCTUATION, "Expected PUNCTUATION");
 
             while (true)

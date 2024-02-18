@@ -91,6 +91,11 @@ namespace fim.spike
             return true;
         }
 
+        public string GetReportText(int start, int length)
+        {
+            return this.Report.Substring(start, length);
+        }
+
         public void ThrowSyntaxError(int index, string error)
         {
             throw new FiMException($"[line: {FiMException.GetIndexPair(Report, index).Line}] {error}");
