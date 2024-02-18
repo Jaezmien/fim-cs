@@ -69,10 +69,13 @@
         KEYWORD_CONSTANT,
         KEYWORD_OF,
         KEYWORD_THEN,
+        KEYWORD_STATEMENT_END,
 
         IF_CLAUSE,
         ELSE_CLAUSE,
         IF_END_CLAUSE,
+
+        WHILE_CLAUSE,
     }
 
     internal interface IPosition

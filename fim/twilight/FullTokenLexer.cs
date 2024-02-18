@@ -101,6 +101,9 @@
                 ProcessToken(currentToken, TokenParsers.IsElseKeyword, TokenType.ELSE_CLAUSE);
                 ProcessToken(currentToken, TokenParsers.IsIfEndKeyword, TokenType.IF_END_CLAUSE);
 
+                ProcessToken(currentToken, TokenParsers.IsWhileKeyword, TokenType.WHILE_CLAUSE);
+                ProcessToken(currentToken, TokenParsers.IsStatementEndKeyword, TokenType.KEYWORD_STATEMENT_END);
+
                 ProcessToken(currentToken, TokenParsers.IsInfixAddition, TokenType.OPERATOR_ADD_INFIX);
                 ProcessToken(currentToken, TokenParsers.IsPrefixAddition, TokenType.OPERATOR_ADD_PREFIX);
                 ProcessToken(currentToken, TokenParsers.IsInfixSubtraction, TokenType.OPERATOR_SUB_INFIX);

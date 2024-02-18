@@ -16,7 +16,6 @@ namespace fim.spike.Nodes
                 if (ast.Check(TokenType.END_OF_FILE)) { ast.ThrowSyntaxError(ast.Peek(), "Could not find end of statement body"); }
                 if (ast.Check(TokenType.NEWLINE)) { ast.Next(); continue; }
 
-                // TODO: Statement parsing
                 if( ast.Peek().Type == TokenType.VARIABLE_DECLARATION )
                 {
                     var variableNode = VariableDeclarationNode.Parse(ast);
@@ -58,6 +57,12 @@ namespace fim.spike.Nodes
                 {
                     var ifNode = IfStatementNode.Parse(ast);
                     node.Statements.Add(ifNode);
+                    continue;
+                }
+                if( ast.Peek().Type == TokenType.WHILE_CLAUSE )
+                {
+                    var whileNode = WhileStatementNode.Parse(ast);
+                    node.Statements.Add(whileNode);
                     continue;
                 }
 

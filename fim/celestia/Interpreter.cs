@@ -341,6 +341,21 @@ namespace fim.celestia
                         }
                     }
                 }
+
+                if( Utilities.IsSameClass(statement.GetType(), typeof(WhileStatementNode)))
+                {
+                    WhileStatementNode? whileNode = (WhileStatementNode)statement;
+
+                    while(true)
+                    {
+                        var conditionResult = EvaluateValueNode(whileNode.Condition!, out var resultType, true);
+                        if (resultType != VarType.BOOLEAN) ThrowRuntimeError(whileNode.Condition!, "Expected type " + VarType.BOOLEAN + ", got " + resultType);
+
+                        if ((bool)conditionResult! == false) break;
+
+                        EvalauateStatementsNode(whileNode.Body!);
+                    }
+                }
             }
 
             Variables.Pop(false, createdVariables);
