@@ -342,7 +342,6 @@ namespace fim.tests
             Assert.AreEqual("123\n133", sw.ToString());
         }
 
-        [Ignore]
         [TestMethod]
         public void WhileLoop()
         {
@@ -354,7 +353,7 @@ namespace fim.tests
                     
                     As long as Spike is no greater than 5...
                         I said Spike.
-                        Spike got one less.
+                        Spike got one more.
                     That's what I did.
                 That's all about how to run loops.
 
