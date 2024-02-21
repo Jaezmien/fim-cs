@@ -16,9 +16,6 @@
             string[][] MULTI_TOKENS =
             {
                 new string[] {"is", " ", "now"},
-                new string[] {"is", " ", "now"},
-                new string[] {"is", " ", "now"},
-                new string[] {"is", " ", "now"},
             };
 
             foreach (string[] MULTI_TOKEN in MULTI_TOKENS)
