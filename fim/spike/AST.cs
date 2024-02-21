@@ -39,9 +39,10 @@ namespace fim.spike
             return false;
         }
         public bool EndOfFile() { return Peek().Type == TokenType.END_OF_FILE; }
-        public Token Consume(TokenType type, string error)
+        public Token Consume(TokenType type, string error) => Consume(t => t.Type == type, error);
+        public Token Consume(Func<Token, bool> predicate, string error)
         {
-            if (!Check(type)) ThrowSyntaxError(Peek(), error);
+            if (!predicate(Peek())) ThrowSyntaxError(Peek(), error);
 
             try
             {

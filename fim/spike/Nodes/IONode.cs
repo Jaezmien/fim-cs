@@ -29,4 +29,28 @@ namespace fim.spike.Nodes
             return node;
         }
     }
+
+    public class PromptNode : Node
+    {
+        public string Identifier = "";
+        public ValueNode? Prompt = null;
+        
+        public static PromptNode Parse(AST ast)
+        {
+            PromptNode node = new();
+
+            Token startToken = ast.Consume(TokenType.PROMPT, "Expected PROMPT");
+            node.Identifier = ast.Consume(TokenType.LITERAL, "Expected LITERAL").Value;
+            ast.Consume((t) => t.Type == TokenType.PUNCTUATION && t.Value == ":", "Expected PUNCTUATION_COLON");
+
+            var promptTokens = ast.ConsumeUntilMatch(TokenType.PUNCTUATION, "Could not find PUNCTUATION");
+            node.Prompt = AST.CreateValueNode(promptTokens);
+            Token endToken = ast.Consume(TokenType.PUNCTUATION, "Expected PUNCTUATION.");
+
+            node.Start = startToken.Start;
+            node.Length = endToken.Start + endToken.Length - startToken.Start;
+
+            return node;
+        }
+    }
 }

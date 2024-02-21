@@ -3,6 +3,7 @@
     internal partial class TokenParsers
     {
         private static readonly string[] PRINT_TOKENS = { "said", "sang", "wrote" };
+        private static readonly string[] READ_TOKENS = { "heard", "read", "asked" };
         internal static bool IsPrintMethod(Token currentToken, Queue<Token> oldTokens, out int dequeueAmount)
         {
             dequeueAmount = -1;
@@ -31,6 +32,20 @@
             if (Array.IndexOf(PRINT_TOKENS, oldTokens.ElementAt(3).Value) == -1) { return false; }
 
             dequeueAmount = 4;
+            return true;
+        }
+        internal static bool IsReadMethod(Token currentToken, Queue<Token> oldTokens, out int dequeueAmount)
+        {
+            dequeueAmount = -1;
+
+            if (oldTokens.Count <= 3) { return false; }
+
+            if (currentToken.Value != "I" ||
+                oldTokens.Peek().Value != " ") { return false; }
+
+            if (Array.IndexOf(READ_TOKENS, oldTokens.ElementAt(1).Value) == -1) { return false; }
+
+            dequeueAmount = 2;
             return true;
         }
     }

@@ -1,6 +1,5 @@
 ﻿using fim.spike;
 using fim.spike.Nodes;
-using System.ComponentModel.DataAnnotations;
 
 namespace fim.celestia
 {
@@ -246,6 +245,40 @@ namespace fim.celestia
                     var value = EvaluateValueNode(pNode.Value, out _, true);
                     Console.Write(Utilities.UnsanitizeString(value.ToString()));
                     if (pNode.NewLine) { Console.Write("\n"); }
+                }
+                if (Utilities.IsSameClass(statement.GetType(), typeof(PromptNode)))
+                {
+                    var pNode = (PromptNode)statement;
+                    Variable? var = Variables.Get(pNode.Identifier, true);
+
+                    if( var == null ) ThrowRuntimeError(pNode, "Variable " + pNode.Identifier + " not found.");
+                    if( var!.IsConstant ) ThrowRuntimeError(pNode, "Tried to modify variable " + pNode.Identifier + ", which is a constant.");
+
+                    var prompt = EvaluateValueNode(pNode.Prompt, out var promptType, true);
+                    if (promptType != VarType.STRING) ThrowRuntimeError(pNode.Prompt, "Expected prompt to be string, got " + promptType);
+
+                    Console.Write(Utilities.UnsanitizeString(prompt.ToString()));
+                    string rawInput = Console.ReadLine();
+
+                    try
+                    {
+                        switch(var.Type)
+                        {
+                            case VarType.STRING:
+                                var.Value = rawInput;
+                                break;
+                            case VarType.NUMBER:
+                                var.Value = Convert.ToDouble(rawInput);
+                                break;
+                            default:
+                                ThrowRuntimeError(pNode, "Cannot use variable type " + var.Type + " in a prompt statement");
+                                break;
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        ThrowRuntimeError(pNode, "Type mismatch");
+                    }
                 }
 
                 if( Utilities.IsSameClass(statement.GetType(), typeof(VariableDeclarationNode)))
