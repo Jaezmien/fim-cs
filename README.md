@@ -8,7 +8,7 @@
 
 <div>
 	<a href="https://github.com/Jaezmien/fim">
-		<img src="https://img.shields.io/badge/version-0.0.1-red">
+		<img src="https://img.shields.io/badge/version-pre--alpha-red">
 	</a>
 </div>
 
@@ -47,7 +47,7 @@ Interpreter i = Letter.WriteLetter(
 interpreter.MainParagraph?.Execute(); // Outputs "Hello World!" into the console.
 ```
 
-See the [reports folder](./fim.cli/Reports/), or the [tests sample](./fim.tests/Samples.cs) for sample reports you can run on fim.
+See the [reports folder](./fim.cli/Reports/), or the [tests project](./fim.tests/) for sample reports you can run on fim.
 
 # 📚 External Resources
 
