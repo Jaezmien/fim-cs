@@ -85,6 +85,7 @@
                 ProcessToken(currentToken, TokenParsers.IsPrintMethod, TokenType.PRINT);
                 ProcessToken(currentToken, TokenParsers.IsPrintLnMethod, TokenType.PRINT_INLINE);
                 ProcessToken(currentToken, TokenParsers.IsReadMethod, TokenType.PROMPT);
+                ProcessToken(currentToken, TokenParsers.IsFunctionCallMethod, TokenType.FUNCTION_CALL);
 
                 ProcessToken(currentToken, TokenParsers.IsVariableDeclaration, TokenType.VARIABLE_DECLARATION);
                 ProcessToken(currentToken, TokenParsers.IsVariableModifier, TokenType.VARIABLE_MODIFY);
@@ -126,6 +127,7 @@
                 ProcessToken(currentToken, TokenParsers.IsUnaryDecrement, TokenType.UNARY_DECREMENT);
                 ProcessToken(currentToken, TokenParsers.IsUnaryNot, TokenType.UNARY_NOT);
 
+                ProcessToken(currentToken, TokenParsers.IsReturnKeyword, TokenType.KEYWORD_RETURN);
                 ProcessToken(currentToken, TokenParsers.IsConstantKeyword, TokenType.KEYWORD_CONSTANT);
                 ProcessToken(currentToken, TokenParsers.IsThenKeyword, TokenType.KEYWORD_THEN);
                 ProcessToken(currentToken, TokenParsers.IsAndKeyword, TokenType.KEYWORD_AND);

@@ -71,6 +71,18 @@ namespace fim.spike.Nodes
                     node.Statements.Add(whileNode);
                     continue;
                 }
+                if( ast.Peek().Type == TokenType.KEYWORD_RETURN )
+                {
+                    var returnNode = ReturnNode.Parse(ast);
+                    node.Statements.Add(returnNode);
+                    continue;
+                }
+                if( ast.Peek().Type == TokenType.FUNCTION_CALL )
+                {
+                    var functionCallNode = FunctionCallNode.Parse(ast);
+                    node.Statements.Add(functionCallNode);
+                    continue;
+                }
 
                 ast.Next();
             }

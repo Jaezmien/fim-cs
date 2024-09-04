@@ -25,6 +25,7 @@
         PRINT,
         PRINT_INLINE,
         PROMPT,
+        FUNCTION_CALL,
 
         VARIABLE_DECLARATION,
         VARIABLE_MODIFY,
@@ -70,6 +71,7 @@
         KEYWORD_OF,
         KEYWORD_THEN,
         KEYWORD_STATEMENT_END,
+        KEYWORD_RETURN,
 
         IF_CLAUSE,
         ELSE_CLAUSE,

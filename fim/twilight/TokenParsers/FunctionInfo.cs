@@ -57,5 +57,41 @@
 
             return false;
         }
+        internal static bool IsReturnKeyword(Token currentToken, Queue<Token> oldTokens, out int dequeueAmount)
+        {
+            dequeueAmount = -1;
+
+            if( !FullTokenLexer.CheckTokenSequence(currentToken, oldTokens, new string[] { "Then" , " ", "you", " ", "get" } ))
+            {
+                return false;
+            }
+
+            dequeueAmount = 4;
+            return true;
+        }
+
+        internal static bool IsFunctionCallMethod(Token currentToken, Queue<Token> oldTokens, out int dequeueAmount)
+        {
+            dequeueAmount = -1;
+
+            if (currentToken.Value != "I") return false;
+            if( oldTokens.Count < 3 ) { return false; }
+
+            string[][] MULTI_TOKENS =
+            {
+                new string[] {"I", " ", "remembered"},
+                new string[] {"I", " ", "would"},
+            };
+            foreach (string[] MULTI_TOKEN in MULTI_TOKENS)
+            {
+                if (FullTokenLexer.CheckTokenSequence(currentToken, oldTokens, MULTI_TOKEN))
+                {
+                    dequeueAmount = MULTI_TOKEN.Length - 1;
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

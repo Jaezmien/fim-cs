@@ -184,6 +184,7 @@ namespace fim.spike
                     };
                 }
 
+                // Binary Expression
                 {
                     BinaryExpressionNode? node = null;
                     void CheckExpression(Func<bool> predicate, Func<int> index, BinaryExpressionOperator op, BinaryExpressionType type)
@@ -347,6 +348,31 @@ namespace fim.spike
                     return vNode;
                 }
 
+                if( tokens.FindIndex(t => t.Type == TokenType.FUNCTION_PARAMETER) != -1 )
+                {
+                    ;
+                    //var paramIndex = tokens.FindIndex(t => t.Type == TokenType.FUNCTION_PARAMETER);
+                    //var identifierTokens = tokens.GetRange(0, paramIndex);
+                    //var paramTokens = tokens.GetRange(paramIndex + 1, tokens.Count - paramIndex - 1);
+                    //if (identifierTokens.Count != 1 || identifierTokens.First().Type != TokenType.LITERAL) throw new Exception("Expected identifier");
+                    //if (paramTokens.Count < 1) throw new Exception("Expected parameters");
+
+                    //var startToken = tokens.First();
+                    //var endToken = tokens.Last();
+
+                    //return new FunctionCallNode()
+                    //{
+                
+                    //};
+
+                    //return new IndexIdentifierNode()
+                    //{
+                    //    Start = startToken.Start,
+                    //    Length = endToken.Start + endToken.Length - startToken.Start,
+                    //    Identifier = paramTokens.First().Value,
+                    //    Index = CreateValueNode(identifierTokens),
+                    //};
+                }
 
                 throw new NotImplementedException();
             }

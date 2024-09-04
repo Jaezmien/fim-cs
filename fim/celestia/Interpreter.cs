@@ -130,6 +130,24 @@ namespace fim.celestia
                     resultType = variable.Type;
                     return variable.Value;
                 }
+
+                var paragraph = Paragraphs.Where(p => p.Name == iNode.Identifier).FirstOrDefault();
+                if (paragraph != null)
+                {
+                    if (paragraph.Returns == null) ThrowRuntimeError(iNode, "Called paragraph with no return type for return value");
+
+                    var resultNode = paragraph.Execute();
+                    if (resultNode == null) ThrowRuntimeError(iNode, "Expected a return value, got nothing.");
+
+                    var resultExpectedType = (VarType)paragraph.Returns!;
+                    var result = EvaluateValueNode(resultNode, out VarType resultReturnedType);
+
+                    if (resultReturnedType != resultExpectedType) ThrowRuntimeError(iNode, "Expected " + resultExpectedType + ", got " + resultReturnedType);
+
+                    resultType = resultReturnedType;
+                    return result;
+
+                }
             }
             else if (Utilities.IsSameClass(node.GetType(), typeof(IndexIdentifierNode)))
             {
@@ -233,9 +251,11 @@ namespace fim.celestia
             throw new Exception();
         }
 
-        internal void EvalauateStatementsNode(StatementsNode node)
+        internal ValueNode? EvalauateStatementsNode(StatementsNode node)
         {
             uint createdVariables = 0;
+
+            ValueNode? returnValue = null;
 
             foreach (var statement in node.Statements)
             {
@@ -389,9 +409,28 @@ namespace fim.celestia
                         EvalauateStatementsNode(whileNode.Body!);
                     }
                 }
+
+                if( Utilities.IsSameClass(statement.GetType(), typeof(FunctionCallNode)))
+                {
+                    FunctionCallNode funcCallNode = (FunctionCallNode)statement;
+
+                    Paragraph? par = Paragraphs.Where(p => p.Name == funcCallNode.Identifier).FirstOrDefault();
+                    if (par == null) ThrowRuntimeError(funcCallNode, "Paragraph " + funcCallNode.Identifier + " not found.");
+
+                    par!.Execute(funcCallNode.Parameters);
+                }
+                if( Utilities.IsSameClass(statement.GetType(), typeof(ReturnNode)))
+                {
+                    ReturnNode returnNode = (ReturnNode)statement;
+
+                    returnValue = returnNode.Value; 
+                    break;
+                }
             }
 
             Variables.Pop(false, createdVariables);
+
+            return returnValue;
         }
 
         public void ThrowRuntimeError(int index, string error)
