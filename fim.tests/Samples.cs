@@ -199,20 +199,19 @@ namespace fim.tests
             Assert.AreEqual(string.Join("", new string[] { "Gala", "Red Delicious", "Mcintosh", "Honeycrisp" }.Select(b => b.ToString() + "\n")), sw.ToString());
         }
 
-        [Ignore]
         [TestMethod]
         public void FunctionParams()
         {
             string letter = """
                 Dear Princess Celestia: Functions!
                 
-                I learned how to take multiple parameters using the word x and the number y.
+                I learned how to take multiple parameters using the word x, the number y.
                     I said x.
                     I said y.
                 That's all about how to take multiple parameters.
 
                 Today I learned how to run a function!
-                    I remembered how to take multiple parameters using "x" and 1.
+                    I remembered how to take multiple parameters using "x", 1.
                     I remembered how to take multiple parameters using "y".
                 That's all about how to run a function.
 
