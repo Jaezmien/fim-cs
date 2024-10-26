@@ -44,7 +44,7 @@ namespace fim.celestia
                     i++;
                 }
 
-                while(i < Parameters.Count)
+                while(i < Parameters!.Count)
                 {
                     var paragraphParameter = Parameters[i];
 

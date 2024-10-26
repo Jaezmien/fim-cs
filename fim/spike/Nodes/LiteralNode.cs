@@ -51,7 +51,7 @@ namespace fim.spike.Nodes
             }
             set
             {
-                RawDict = (value as IDictionary<int, ValueNode>).ToDictionary(i => (int)i.Key, i => (ValueNode)i.Value);
+                RawDict = (value as IDictionary<int, ValueNode>)!.ToDictionary(i => (int)i.Key, i => (ValueNode)i.Value);
             }
         }
 

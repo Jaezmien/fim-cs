@@ -82,7 +82,7 @@ namespace fim.celestia
                         {
                             var entryValue = EvaluateValueNode(entry.Value, out var entryType, true);
                             if (entryType != expectedType) throw new Exception("Expected " + expectedType + ", got " + entryType);
-                            dict[entry.Key] = (bool)entryValue;
+                            dict[entry.Key] = (bool)entryValue!;
                         }
                     }
                     resultType = VarType.BOOLEAN_ARRAY;
@@ -97,7 +97,7 @@ namespace fim.celestia
                         {
                             var entryValue = EvaluateValueNode(entry.Value, out var entryType, true);
                             if (entryType != expectedType) throw new Exception("Expected " + expectedType + ", got " + entryType);
-                            dict[entry.Key] = (double)entryValue;
+                            dict[entry.Key] = (double)entryValue!;
                         }
                     }
                     resultType = VarType.NUMBER_ARRAY;
@@ -112,7 +112,7 @@ namespace fim.celestia
                         {
                             var entryValue = EvaluateValueNode(entry.Value, out var entryType, true);
                             if (entryType != expectedType) throw new Exception("Expected " + expectedType + ", got " + entryType);
-                            dict[entry.Key] = (string)entryValue;
+                            dict[entry.Key] = (string)entryValue!;
                         }
                     }
                     resultType = VarType.STRING_ARRAY;
@@ -263,7 +263,7 @@ namespace fim.celestia
                 {
                     var pNode = (PrintNode)statement;
                     var value = EvaluateValueNode(pNode.Value, out _, true);
-                    Console.Write(Utilities.UnsanitizeString(value.ToString()));
+                    Console.Write(Utilities.UnsanitizeString(value!.ToString()!));
                     if (pNode.NewLine) { Console.Write("\n"); }
                 }
                 if (Utilities.IsSameClass(statement.GetType(), typeof(PromptNode)))
@@ -275,10 +275,10 @@ namespace fim.celestia
                     if( var!.IsConstant ) ThrowRuntimeError(pNode, "Tried to modify variable " + pNode.Identifier + ", which is a constant.");
 
                     var prompt = EvaluateValueNode(pNode.Prompt, out var promptType, true);
-                    if (promptType != VarType.STRING) ThrowRuntimeError(pNode.Prompt, "Expected prompt to be string, got " + promptType);
+                    if (promptType != VarType.STRING) ThrowRuntimeError(pNode.Prompt!, "Expected prompt to be string, got " + promptType);
 
-                    Console.Write(Utilities.UnsanitizeString(prompt.ToString()));
-                    string rawInput = Console.ReadLine();
+                    Console.Write(Utilities.UnsanitizeString(prompt!.ToString()!));
+                    string rawInput = Console.ReadLine()!;
 
                     try
                     {
@@ -295,7 +295,7 @@ namespace fim.celestia
                                 break;
                         }
                     }
-                    catch(Exception ex)
+                    catch(Exception)
                     {
                         ThrowRuntimeError(pNode, "Type mismatch");
                     }
@@ -334,11 +334,11 @@ namespace fim.celestia
                     if (indexType != VarType.NUMBER) ThrowRuntimeError(amNode.Identifier!.Index!, "Expected type " + VarType.NUMBER + ", got " + indexType);
 
                     var value = EvaluateValueNode(amNode.Value, out var valueType, true);
-                    if( valueType != Utilities.GetArrayBaseType(var.Type)) ThrowRuntimeError(amNode, "Expected type " + Utilities.GetArrayBaseType(var.Type) + ", got " + valueType);
+                    if( valueType != Utilities.GetArrayBaseType(var!.Type)) ThrowRuntimeError(amNode, "Expected type " + Utilities.GetArrayBaseType(var.Type) + ", got " + valueType);
 
                     if( var.Type == VarType.BOOLEAN_ARRAY ) { (var.Value as Dictionary<int, bool>)![Convert.ToInt32(indexValue)] = Convert.ToBoolean(value); }
                     if( var.Type == VarType.NUMBER_ARRAY ) { (var.Value as Dictionary<int, double>)![Convert.ToInt32(indexValue)] = Convert.ToDouble(value); }
-                    if( var.Type == VarType.STRING_ARRAY ) { (var.Value as Dictionary<int, string>)![Convert.ToInt32(indexValue)] = Convert.ToString(value); }
+                    if( var.Type == VarType.STRING_ARRAY ) { (var.Value as Dictionary<int, string>)![Convert.ToInt32(indexValue)] = Convert.ToString(value)!; }
                 }
                 if( Utilities.IsSameClass(statement.GetType(), typeof(PostfixUnaryNode)))
                 {
@@ -366,7 +366,7 @@ namespace fim.celestia
                         var dict = var.Value as Dictionary<int, double>;
                         var intIndex = Convert.ToInt32(indexValue);
 
-                        dict[intIndex] = dict[intIndex] + (puNode.Type == PostfixUnaryNodeType.INCREMENT ? 1 : -1);
+                        dict![intIndex] = dict[intIndex] + (puNode.Type == PostfixUnaryNodeType.INCREMENT ? 1 : -1);
                     }
                     else
                     {
@@ -381,7 +381,7 @@ namespace fim.celestia
                     while (ifNode != null)
                     {
                         var ifResult = EvaluateValueNode(ifNode.ifStatement!.Condition, out var ifResultType, true);
-                        if (ifResultType != VarType.BOOLEAN) ThrowRuntimeError(ifNode.ifStatement!.Condition, "Expected type " + VarType.BOOLEAN + ", got " + ifResultType);
+                        if (ifResultType != VarType.BOOLEAN) ThrowRuntimeError(ifNode.ifStatement!.Condition!, "Expected type " + VarType.BOOLEAN + ", got " + ifResultType);
 
                         if ((bool)ifResult! == true)
                         {
