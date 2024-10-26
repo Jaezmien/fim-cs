@@ -14,19 +14,19 @@ namespace fim.spike.Nodes
                 }
                 if( Type == VarType.CHAR ) {
                     string expectedChar = RawValue[1..^1];
-                    if( expectedChar.StartsWith("\\") ) {
-                        switch(expectedChar[1])
+                    if( expectedChar.StartsWith('\\') ) {
+                        return expectedChar[1] switch
                         {
-                            case '0': return '\0';
-                            case 'r': return '\r';
-                            case 'n': return '\n';
-                            case 't': return '\t';
-                            default: return expectedChar[1];
-                        } 
+                            '0' => '\0',
+                            'r' => '\r',
+                            'n' => '\n',
+                            't' => '\t',
+                            _ => (object)expectedChar[1],
+                        };
                     }
                     return char.Parse(expectedChar);
                 }
-                if( Type == VarType.BOOLEAN ) { return Array.IndexOf(new string[] { "yes", "true", "right", "correct" }, RawValue) != -1;  }
+                if( Type == VarType.BOOLEAN ) { return Array.IndexOf(["yes", "true", "right", "correct"], RawValue) != -1;  }
                 if( Type == VarType.NUMBER ) { return double.Parse(RawValue); }
 
                 return RawValue;
@@ -41,7 +41,7 @@ namespace fim.spike.Nodes
 
     public class LiteralDictNode : ValueNode
     {
-        public Dictionary<int, ValueNode> RawDict = new Dictionary<int, ValueNode>();
+        public Dictionary<int, ValueNode> RawDict = [];
 
         public object Value
         {
