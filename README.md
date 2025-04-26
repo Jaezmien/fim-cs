@@ -1,3 +1,9 @@
+# ⚠ Abandoned
+
+I have rewritten fim in Golang instead of C#. Please check out the successor: [fim](https://github.com/Jaezmien/fim).
+
+---
+
 <div align="center">
   
 # 🐎 fim 
